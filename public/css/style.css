@@ -6,3 +6,8 @@
 body {
   font-family: sans-serif;
 }
+#controls {
+	left: 0;
+	position: absolute;
+	top: 0;
+}

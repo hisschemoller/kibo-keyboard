@@ -1,9 +1,12 @@
 import { dispatch, getActions, STATE_CHANGE, } from '../store/store.js';
 import addWindowResizeCallback from '../view/windowresize.js';
+import { connect3DAndPhysics, } from './physics.js';
+import { createMesh } from './webgl-factory.js';
 import { 
   AmbientLight,
   DirectionalLight,
   Group,
+  MathUtils,
   Mesh,
   MeshLambertMaterial,
   // OrbitControls,
@@ -35,14 +38,6 @@ let camera,
  */
 function addEventListeners() {
   document.addEventListener(STATE_CHANGE, onStateChange);
-  // document.addEventListener('keydown', onKeyUpDown);
-  // document.addEventListener('keyup', onKeyUpDown);
-  // renderer.domElement.addEventListener('touchstart', onMouseDown);
-  // renderer.domElement.addEventListener('mousedown', onMouseDown);
-  // renderer.domElement.addEventListener('touchmove', onMouseMove);
-  // renderer.domElement.addEventListener('mousemove', onMouseMove);
-  // renderer.domElement.addEventListener('touchend', onMouseUp);
-  // renderer.domElement.addEventListener('mouseup', onMouseUp);
   addWindowResizeCallback(onWindowResize);
 }
 
@@ -51,7 +46,46 @@ function addEventListeners() {
  * @param {Object} world Physics world.
  */
 export function connectPhysicsAnd3D(world) {
-  
+  world.bodies.allIds.forEach(bodyId => {
+    const body = world.bodies.byId[bodyId];
+    if (scene.meshes.allIds.indexOf(bodyId) !== -1) {
+      body.setUserData({ ...body.getUserData(), mesh: scene.getObjectByName(bodyId), });
+    }
+  });
+}
+
+/**
+ * Create all performers that don't exist yet
+ */
+function createMeshes(state) {
+  const { bodies, } = state;
+  bodies.allIds.forEach(bodyId => {
+    if (!scene.getObjectByName(bodyId) && bodies.byId[bodyId].fixtures) {
+      const mesh = createMesh(bodyId, bodies.byId[bodyId]);
+      scene.add(mesh);
+      scene.meshes.allIds.push(bodyId);
+      scene.meshes.byId[bodyId] = mesh;
+    }
+  });
+
+  // store reference to mesh in each physics body for an efficient draw loop
+  connect3DAndPhysics(scene);
+}
+
+/**
+ * Delete all performers not fornd in the state anymore
+ */
+function deleteMeshes(state) {
+  let i = scene.meshes.allIds.length;
+  while (--i >= 0) {
+    const bodyId = scene.meshes.allIds[i];
+    if (state.bodies.allIds.indexOf(bodyId) === -1) {
+      const mesh = scene.getObjectByName(bodyId);
+      scene.remove(mesh);
+      scene.meshes.allIds.splice(i, 1);
+      delete scene.meshes.byId[bodyId];
+    }
+  }
 }
 
 /**
@@ -61,6 +95,13 @@ export function connectPhysicsAnd3D(world) {
 function onStateChange(e) {
   const { state, action, actions, } = e.detail;
   switch (action.type) {
+
+    case actions.NEW_PROJECT:
+    case actions.SET_PROJECT:
+      deleteMeshes(state);
+      createMeshes(state);
+      onWindowResize();
+      break;
   }
 }
 
@@ -82,6 +123,12 @@ function onWindowResize() {
   camera.position.set(camera.position.x, camera.position.y, targetZ * scale);
 
   // orbitControls.saveState();
+
+  // @see https://stackoverflow.com/questions/13350875/three-js-width-of-view/13351534#13351534
+  const dist = camera.position.z;
+  const vFOV = MathUtils.degToRad(camera.fov); // convert vertical fov to radians
+  const visibleHeight = 2 * Math.tan( vFOV / 2 ) * dist;
+  const visibleWidth = visibleHeight * camera.aspect;
 }
 
 /**
@@ -128,18 +175,18 @@ function setupWebGLWorld() {
   camera.name = 'camera';
   scene.add(camera);
 
-  // const ambientLight = new AmbientLight(0xffffff);
-  // scene.add(ambientLight);
+  const ambientLight = new AmbientLight(0xffffff);
+  scene.add(ambientLight);
 
-  // const directionalLight = new DirectionalLight(0xffffff, 0.5);
-  // directionalLight.position.set(-0.5, 0.5, -1.5).normalize();
-  // scene.add(directionalLight);
+  const directionalLight = new DirectionalLight(0xffffff, 0.5);
+  directionalLight.position.set(-0.5, 0.5, -1.5).normalize();
+  scene.add(directionalLight);
   
   plane = new Plane();
   plane.name = 'plane';
   plane.setFromNormalAndCoplanarPoint(
     camera.getWorldDirection(plane.normal),
-    new Vector3(0,0,0));
+    new Vector3(0, 0, 0));
 
   // mapping cable lines
   // const mappingCables = new Group();
