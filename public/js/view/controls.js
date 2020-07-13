@@ -27,21 +27,15 @@ function addEventListeners() {
           console.log('world', getWorld());
           console.log('state', getState());
           break;
+        
+        case 32: // space
+          dispatch(getActions().playNote());
+          break;
       }
     }
   });
 
-  document.addEventListener('keyup', function(e) {
-
-    // don't perform shortcuts while typing in a text input.
-    if (!(e.target.tagName.toLowerCase() == 'input' && e.target.getAttribute('type') == 'text')) {
-      switch (e.keyCode) {
-        case 32: // space
-          dispatch(getActions().togglePlay());
-          break;
-      }
-    }
-
+  document.addEventListener('keyup', () => {
     resetKeyCombo.length = 0;
   });
 }

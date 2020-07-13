@@ -49,7 +49,6 @@ export function connectPhysicsAnd3D(world) {
   world.bodies.allIds.forEach(bodyId => {
     const body = world.bodies.byId[bodyId];
     if (scene.meshes.allIds.indexOf(bodyId) !== -1) {
-      console.log(bodyId);
       body.setUserData({ ...body.getUserData(), mesh: scene.getObjectByName(bodyId), });
     }
   });
@@ -96,6 +95,10 @@ function deleteMeshes(state) {
 function onStateChange(e) {
   const { state, action, actions, } = e.detail;
   switch (action.type) {
+
+    case actions.PLAY_NOTE:
+      createMeshes(state);
+      break;
 
     case actions.POPULATE:
       deleteMeshes(state);

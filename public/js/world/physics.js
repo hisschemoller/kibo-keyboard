@@ -6,7 +6,7 @@ const { Vec2, World } = planck;
 const FPS = 60;
 const SPF = 1 / FPS;
 
-let world;
+let world, floorBody;
 
 /**
  * Add event listeners.
@@ -126,11 +126,18 @@ function onStateChange(e) {
   const { state, action, actions, } = e.detail;
   switch (action.type) {
 
+    case actions.PLAY_NOTE:
+      createBodies(state);
+      const x = (Math.random() * 0.1) - 0.05;
+      world.bodies.byId[state.note.id].setLinearVelocity(Vec2(x, 10))
+      break;
+
     case actions.POPULATE:
       destroyJoints(state);
       destroyBodies(state);
       createBodies(state);
       createJoints(state);
+      storeFloorBody();
       break;
   }
 }
@@ -160,4 +167,20 @@ function setupPhysicsWorld() {
     allIds: [],
     byId: {},
   }
+
+  world.on('pre-solve', function(contact, oldManifold) {
+    const bodyA = contact.getFixtureA().getBody();
+    const bodyB = contact.getFixtureB().getBody();
+    if (
+      (bodyA === floorBody && bodyA.getPosition().y > bodyB.getPosition().y) ||
+      (bodyB === floorBody && bodyB.getPosition().y > bodyA.getPosition().y)
+    ) {
+      contact.setEnabled(false);
+    }
+  });
+}
+
+function storeFloorBody() {
+  const floorBodyId = world.bodies.allIds.find(bodyId => bodyId.indexOf('FLOOR') > -1);
+  floorBody = world.bodies.byId[floorBodyId];
 }

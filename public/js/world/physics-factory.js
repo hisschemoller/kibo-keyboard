@@ -204,6 +204,8 @@ function createFixtureDefinition(fixtureConfig) {
     cy = 0,
     angle = 0,
     density = 1,
+    friction = 0.5,
+    restitution = 0.8,
     filterCategoryBits = 0x0001,
     filterMaskBits = 0x0001,
     isSensor = false,
@@ -226,7 +228,7 @@ function createFixtureDefinition(fixtureConfig) {
       break;
   }
 
-  const fixtureDefinition = { shape, density, filterCategoryBits, filterMaskBits, isSensor, userData, };
+  const fixtureDefinition = { shape, density, friction, restitution, filterCategoryBits, filterMaskBits, isSensor, userData, };
 
   return fixtureDefinition;
 }

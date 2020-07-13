@@ -8,6 +8,9 @@ const initialState = {
     allIds: [],
     byId: {},
   },
+  note: {
+    id: null,
+  },
   visibleHeight: 0,
   visibleWidth: 0,
 };
@@ -28,6 +31,26 @@ export default function reduce(state = initialState, action, actions = {}) {
         joints: {
           allIds: [],
           byId: {},
+        },
+      };
+    }
+
+    case actions.PLAY_NOTE: {
+      const { body, id } = action;
+      return { 
+        ...state, 
+        bodies: {
+          allIds: [ ...state.bodies.allIds, id ],
+          byId: { 
+            ...state.bodies.allIds.reduce((accumulator, bodyId) => {
+              accumulator[bodyId] = { ...state.bodies.byId[bodyId] };
+              return accumulator;
+            }, {}),
+            [id]: body,
+          }
+        }, 
+        note: {
+          id,
         },
       };
     }
