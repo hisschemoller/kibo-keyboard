@@ -129,7 +129,8 @@ function onStateChange(e) {
     case actions.PLAY_NOTE:
       createBodies(state);
       const x = (Math.random() * 0.1) - 0.05;
-      world.bodies.byId[state.note.id].setLinearVelocity(Vec2(x, 10))
+      const y = 10 + Math.random() * 10;
+      world.bodies.byId[state.note.id].setLinearVelocity(Vec2(x, y))
       break;
 
     case actions.POPULATE:

@@ -40,31 +40,20 @@ export default {
       return { 
         type: POPULATE, 
         bodies: {
-          allIds: [ floorId, /* 'ceiling', leftId, rightId */ ],
+          allIds: [ floorId, 'ceiling' ],
           byId: {
             [floorId]: {
-              fixtures: [
-                { w: visibleWidth, h: 0.1, d: 0.1, }
-              ],
+              fixtures: [ { w: visibleWidth, h: 0.1, d: 0.1, } ],
               x: 0,
               y: visibleHeight * -0.4,
               type: 'static',
             },
-            // ceiling: {
-            //   fixtures: [ { w: 0.3, h: 0.3, d: 0.1 } ],
-            //   x: 1.7,
-            //   y: 3,
-            // },
-            // [leftId]: {
-            //   fixtures: [ { w: 0.3, h: 0.3, d: 0.1 } ],
-            //   x: visibleWidth * -0.5,
-            //   y: visibleHeight * 0.5,
-            // },
-            // [rightId]: {
-            //   fixtures: [ { w: 0.3, h: 0.3, d: 0.1 } ],
-            //   x: visibleWidth * 0.5,
-            //   y: visibleHeight * 0.5,
-            // },
+            ceiling: {
+              fixtures: [ { w: visibleWidth, h: 0.1, d: 0.1, } ],
+              x: 0,
+              y: visibleHeight * 0.5,
+              type: 'static',
+            },
           },
         },
       };
