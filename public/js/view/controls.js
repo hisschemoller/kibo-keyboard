@@ -1,7 +1,7 @@
 import { dispatch, getActions, getState, STATE_CHANGE, } from '../store/store.js';
 import { getWorld } from '../world/physics.js';
 
-let rootEl, playEl, outputEl;
+let rootEl;
 let resetKeyCombo = [];
 
 function addEventListeners() {
@@ -44,34 +44,16 @@ function addEventListeners() {
 
     resetKeyCombo.length = 0;
   });
-
-  playEl.addEventListener('click', () => {
-    dispatch(getActions().togglePlay());
-  });
-
-  rootEl.querySelector('#new').addEventListener('click', () => {
-    dispatch(getActions().newProject());
-  });
 }
 
 function handleStateChanges(e) {
   const { state, action, actions, } = e.detail;
   switch (action.type) {
-    
-    case actions.SET_PROJECT:
-    case actions.TOGGLE_PLAY:
-      togglePlay(state);
-      break;
   }
 }
 
 export function setup() {
   rootEl = document.querySelector('#controls');
-  playEl = rootEl.querySelector('#play');
 
   addEventListeners();
-}
-
-function togglePlay(state) {
-  playEl.checked = state.isPlaying;
 }

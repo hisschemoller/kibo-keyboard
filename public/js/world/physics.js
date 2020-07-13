@@ -6,8 +6,7 @@ const { Vec2, World } = planck;
 const FPS = 60;
 const SPF = 1 / FPS;
 
-let world,
-  isPlaying = true;
+let world;
 
 /**
  * Add event listeners.
@@ -88,9 +87,7 @@ function destroyJoints(state) {
  * Update the physics world and render the results in 3D.
  */
 function draw() {
-  if (isPlaying) {
-    world.step(SPF);
-  }
+  world.step(SPF);
 
   // update 3D objects position and rotation
   let body = world.getBodyList();

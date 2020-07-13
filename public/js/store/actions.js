@@ -4,7 +4,6 @@ const NEW_PROJECT = 'NEW_PROJECT';
 const POPULATE = 'POPULATE';
 const RESIZE = 'RESIZE';
 const SET_PROJECT = 'SET_PROJECT';
-const TOGGLE_PLAY = 'TOGGLE_PLAY';
 
 // actions
 export default {
@@ -58,7 +57,4 @@ export default {
   
   SET_PROJECT,
   setProject: state => ({ type: SET_PROJECT, state }),
-
-  TOGGLE_PLAY,
-  togglePlay: () => ({ type: TOGGLE_PLAY, }),
 };

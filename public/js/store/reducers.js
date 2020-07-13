@@ -4,7 +4,6 @@ const initialState = {
     allIds: [],
     byId: {},
   },
-  isPlaying: false,
   joints: {
     allIds: [],
     byId: {},
@@ -47,12 +46,6 @@ export default function reduce(state = initialState, action, actions = {}) {
       const { visibleWidth, visibleHeight } = state;
       return { ...state, ...action.state, visibleHeight, visibleWidth, };
     }
-
-    case actions.TOGGLE_PLAY:
-      return {
-        ...state,
-        isPlaying: !state.isPlaying,
-      };
 
     default:
       return state ? state : initialState;
