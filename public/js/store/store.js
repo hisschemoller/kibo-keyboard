@@ -38,8 +38,8 @@ export function persist() {
   });
   let data = localStorage.getItem(name);
   if (data && data !== 'undefined') {
-    currentState = JSON.parse(data);
-    dispatch(actions.setProject(currentState));
+    const persistedState = JSON.parse(data);
+    dispatch(actions.setProject(persistedState));
   } else {
 
     // start with the initial state

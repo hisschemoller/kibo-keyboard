@@ -49,6 +49,7 @@ export function connectPhysicsAnd3D(world) {
   world.bodies.allIds.forEach(bodyId => {
     const body = world.bodies.byId[bodyId];
     if (scene.meshes.allIds.indexOf(bodyId) !== -1) {
+      console.log(bodyId);
       body.setUserData({ ...body.getUserData(), mesh: scene.getObjectByName(bodyId), });
     }
   });
@@ -96,19 +97,18 @@ function onStateChange(e) {
   const { state, action, actions, } = e.detail;
   switch (action.type) {
 
-    case actions.NEW_PROJECT:
-    case actions.SET_PROJECT:
+    case actions.POPULATE:
       deleteMeshes(state);
       createMeshes(state);
-      onWindowResize();
       break;
   }
 }
 
 /**
  * Window resize event handler.
+ * @param {Boolean} isFirstRun True if function is called as part of app setup.
  */
-function onWindowResize() {
+function onWindowResize(isFirstRun = false) {
   canvasRect = renderer.domElement.getBoundingClientRect();
   renderer.setSize(window.innerWidth, window.innerHeight - canvasRect.top);
   camera.aspect = window.innerWidth / (window.innerHeight - canvasRect.top);
@@ -124,11 +124,17 @@ function onWindowResize() {
 
   // orbitControls.saveState();
 
+  // new viewport size in 3D units at a given distance from the camera.
   // @see https://stackoverflow.com/questions/13350875/three-js-width-of-view/13351534#13351534
   const dist = camera.position.z;
   const vFOV = MathUtils.degToRad(camera.fov); // convert vertical fov to radians
   const visibleHeight = 2 * Math.tan( vFOV / 2 ) * dist;
   const visibleWidth = visibleHeight * camera.aspect;
+  dispatch(getActions().resize(visibleWidth, visibleHeight));
+
+  if (!isFirstRun) {
+    dispatch(getActions().populate());
+  }
 }
 
 /**
@@ -146,7 +152,7 @@ export function setup() {
 
   setupWebGLWorld();
   addEventListeners();
-  onWindowResize();
+  onWindowResize(true);
 }
 
 /**

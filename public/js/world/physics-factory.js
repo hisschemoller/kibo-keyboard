@@ -34,8 +34,8 @@ export function createPhysicsBody(bodyId, bodyConfig, data = {}) {
   } = data;
 
   const bodyDefinition = {
-    angularDamping: 0.9,
-    linearDamping: 0.1,
+    // angularDamping: 0.9,
+    // linearDamping: 0.1,
     position: Vec2(x, y),
     angle,
     type,

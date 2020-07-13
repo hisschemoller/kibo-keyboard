@@ -94,7 +94,6 @@ function draw() {
 
   // update 3D objects position and rotation
   let body = world.getBodyList();
-  // console.log(body);
   while (body && body.getUserData()) {
     const { mesh } = body.getUserData();
     if (mesh) {
@@ -130,8 +129,7 @@ function onStateChange(e) {
   const { state, action, actions, } = e.detail;
   switch (action.type) {
 
-    case actions.NEW_PROJECT:
-    case actions.SET_PROJECT:
+    case actions.POPULATE:
       destroyJoints(state);
       destroyBodies(state);
       createBodies(state);

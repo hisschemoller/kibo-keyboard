@@ -8,6 +8,8 @@ async function main() {
   setupPhysics();
   setupControls();
   persist();
+
+  dispatch(getActions().populate());
 }
 
 main();

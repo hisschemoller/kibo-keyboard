@@ -9,6 +9,8 @@ const initialState = {
     allIds: [],
     byId: {},
   },
+  visibleHeight: 0,
+  visibleWidth: 0,
 };
 
 /**
@@ -22,8 +24,7 @@ export default function reduce(state = initialState, action, actions = {}) {
 
     case actions.NEW_PROJECT: {
       const { bodies } = action;
-      return { 
-        ...initialState,
+      return {  ...initialState,
         bodies,
         joints: {
           allIds: [],
@@ -32,8 +33,20 @@ export default function reduce(state = initialState, action, actions = {}) {
       };
     }
 
-    case actions.SET_PROJECT:
-      return { ...state, ...action.state };
+    case actions.POPULATE: {
+      const { bodies } = action;
+      return { ...state, bodies, };
+    }
+
+    case actions.RESIZE: {
+      const { visibleWidth, visibleHeight } = action;
+      return { ...state, visibleWidth, visibleHeight };
+    }
+
+    case actions.SET_PROJECT: {
+      const { visibleWidth, visibleHeight } = state;
+      return { ...state, ...action.state, visibleHeight, visibleWidth, };
+    }
 
     case actions.TOGGLE_PLAY:
       return {
