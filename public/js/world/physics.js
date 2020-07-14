@@ -6,13 +6,28 @@ const { Vec2, World } = planck;
 const FPS = 60;
 const SPF = 1 / FPS;
 
-let world, floorBody;
+let world, floorBody, cleanupCounter = 0;
 
 /**
  * Add event listeners.
  */
 function addEventListeners() {
   document.addEventListener(STATE_CHANGE, onStateChange);
+}
+
+/**
+ * Remove bodies that have fallen off screen.
+ */
+function cleanup() {
+  const bodyIds = [];
+  world.bodies.allIds.forEach(bodyId => {
+    if (world.bodies.byId[bodyId].getPosition().y < floorBody.getPosition().y - 1) {
+      bodyIds.push(bodyId);
+    }
+  });
+  if (bodyIds.length) {
+    dispatch(getActions().deleteBodies(bodyIds));
+  }
 }
 
 /**
@@ -108,6 +123,12 @@ function draw() {
 
   renderScene();
 
+  cleanupCounter++;
+  if (cleanupCounter > 100) {
+    cleanupCounter = 0;
+    cleanup();
+  }
+
   requestAnimationFrame(draw);
 }
 
@@ -125,6 +146,10 @@ export function getWorld() {
 function onStateChange(e) {
   const { state, action, actions, } = e.detail;
   switch (action.type) {
+
+    case actions.DELETE_BODIES:
+      destroyBodies(state);
+      break;
 
     case actions.PLAY_NOTE:
       createBodies(state);

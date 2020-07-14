@@ -24,6 +24,31 @@ const initialState = {
 export default function reduce(state = initialState, action, actions = {}) {
   switch (action.type) {
 
+    case actions.DELETE_BODIES: {
+      const { bodyIds } = action;
+      return { 
+        ...state, 
+        bodies: {
+          allIds: [ 
+            ...state.bodies.allIds.reduce((accumulator, bodyId) => {
+              if (bodyIds.includes(bodyId)) {
+                return accumulator;
+              }
+              return [ ...accumulator, bodyId ];
+            }, []),
+          ],
+          byId: { 
+            ...state.bodies.allIds.reduce((accumulator, bodyId) => {
+              if (bodyIds.includes(bodyId)) {
+                return accumulator;
+              }
+              return { ...accumulator, [bodyId]: { ...state.bodies.byId[bodyId] } };
+            }, {}),
+          }
+        },
+      };
+    }
+
     case actions.NEW_PROJECT: {
       const { bodies } = action;
       return {  ...initialState,

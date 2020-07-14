@@ -1,5 +1,6 @@
 import { createUUID } from '../utils/utils.js';
 
+const DELETE_BODIES = 'DELETE_BODIES';
 const NEW_PROJECT = 'NEW_PROJECT';
 const PLAY_NOTE = 'PLAY_NOTE';
 const POPULATE = 'POPULATE';
@@ -8,6 +9,9 @@ const SET_PROJECT = 'SET_PROJECT';
 
 // actions
 export default {
+
+  DELETE_BODIES,
+  deleteBodies: bodyIds => ({ type: DELETE_BODIES, bodyIds }),
   
   NEW_PROJECT,
   newProject: () => ({ type: NEW_PROJECT, }),

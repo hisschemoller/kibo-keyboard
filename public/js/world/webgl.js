@@ -96,6 +96,10 @@ function onStateChange(e) {
   const { state, action, actions, } = e.detail;
   switch (action.type) {
 
+    case actions.DELETE_BODIES:
+      deleteMeshes(state);
+      break;
+
     case actions.PLAY_NOTE:
       createMeshes(state);
       break;
