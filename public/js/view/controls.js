@@ -28,8 +28,15 @@ function addEventListeners() {
           console.log('state', getState());
           break;
         
-        case 32: // space
-          dispatch(getActions().playNote());
+        case 49: // 1
+        case 50:
+        case 51:
+        case 52:
+        case 53:
+        case 54:
+        case 55:
+        case 56: // 8
+          dispatch(getActions().playNote(e.keyCode - 49));
           break;
       }
     }

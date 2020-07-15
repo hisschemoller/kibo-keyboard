@@ -17,12 +17,13 @@ export default {
   newProject: () => ({ type: NEW_PROJECT, }),
 
   PLAY_NOTE,
-  playNote: () => {
+  playNote: index => {
     return (dispatch, getState, getActions) => {
       const { visibleWidth, visibleHeight, } = getState();
       return {
         type: PLAY_NOTE,
         id: createUUID(),
+        index,
         body: {
           fixtures: [
             { type: 'circle', r: 0.2, d: 0.1 },

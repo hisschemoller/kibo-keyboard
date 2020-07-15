@@ -1,3 +1,5 @@
+import { createCircleOutline, createShape } from './webgl-helper.js';
+
 /**
  * Create a 3D mesh on basis of the configuration data.
  * @param {String} bodyId ID for the physics body and name for the 3D mesh.

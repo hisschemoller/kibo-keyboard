@@ -10,6 +10,7 @@ const initialState = {
   },
   note: {
     id: null,
+    index: -1,
   },
   visibleHeight: 0,
   visibleWidth: 0,
@@ -61,7 +62,7 @@ export default function reduce(state = initialState, action, actions = {}) {
     }
 
     case actions.PLAY_NOTE: {
-      const { body, id } = action;
+      const { body, id, index } = action;
       return { 
         ...state, 
         bodies: {
@@ -76,6 +77,7 @@ export default function reduce(state = initialState, action, actions = {}) {
         }, 
         note: {
           id,
+          index,
         },
       };
     }

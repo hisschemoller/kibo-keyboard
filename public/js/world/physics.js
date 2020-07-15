@@ -50,7 +50,7 @@ export function connect3DAndPhysics(scene) {
 function createBodies(state) {
   state.bodies.allIds.forEach(bodyId => {
     if (world.bodies.allIds.indexOf(bodyId) === -1) {
-      createPhysicsBody(bodyId, state.bodies.byId[bodyId]);
+      createPhysicsBody(bodyId, state.bodies.byId[bodyId], { noteIndex: state.bodies.byId[bodyId].index });
     }
   });
 
@@ -140,6 +140,19 @@ export function getWorld() {
 }
 
 /**
+ * Launch a new note circle from under the floor.
+ */
+function launchNoteBody(state) {
+  const { note } = state;
+  const { id, index } = note; 
+  const x = (Math.random() * 0.1) - 0.05;
+  const y = 10 + Math.random() * 10;
+  const body = world.bodies.byId[id];
+  body.setUserData({ ...body.getUserData(), noteIndex: index });
+  body.setLinearVelocity(Vec2(x, y));
+}
+
+/**
  * Handle changes in the app state.
  * @param {Object} e CustomEvent from Store when state has been updated.
  */
@@ -153,9 +166,7 @@ function onStateChange(e) {
 
     case actions.PLAY_NOTE:
       createBodies(state);
-      const x = (Math.random() * 0.1) - 0.05;
-      const y = 10 + Math.random() * 10;
-      world.bodies.byId[state.note.id].setLinearVelocity(Vec2(x, y))
+      launchNoteBody(state);
       break;
 
     case actions.POPULATE:
@@ -194,6 +205,9 @@ function setupPhysicsWorld() {
     byId: {},
   }
 
+  world.on('begin-contact', contact => {
+    contact.force = 0;
+  });
   world.on('pre-solve', function(contact, oldManifold) {
     const bodyA = contact.getFixtureA().getBody();
     const bodyB = contact.getFixtureB().getBody();
@@ -202,6 +216,22 @@ function setupPhysicsWorld() {
       (bodyB === floorBody && bodyB.getPosition().y > bodyA.getPosition().y)
     ) {
       contact.setEnabled(false);
+    }
+  });
+  world.on('post-solve', (contact, impulse) => {
+    if (!contact.force) {
+      const { noteIndex: noteIndexA = -1 } = contact.getFixtureA().getBody().getUserData();
+      const { noteIndex: noteIndexB = -1 } = contact.getFixtureB().getBody().getUserData();
+      if (noteIndexA > -1) {
+        console.log(noteIndexA);
+      }
+      if (noteIndexB > -1) {
+        console.log(noteIndexB);
+      }
+      // sendMIDIOnContact(bodyIdA, contact, impulse);
+      // if (performerIdA !== performerIdB) {
+      //   sendMIDIOnContact(bodyIdB, contact, impulse);
+      // }
     }
   });
 }
