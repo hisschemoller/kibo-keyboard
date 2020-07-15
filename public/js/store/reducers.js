@@ -11,6 +11,7 @@ const initialState = {
   note: {
     id: null,
     index: -1,
+    velocity: 0,
   },
   visibleHeight: 0,
   visibleWidth: 0,
@@ -62,7 +63,7 @@ export default function reduce(state = initialState, action, actions = {}) {
     }
 
     case actions.PLAY_NOTE: {
-      const { body, id, index } = action;
+      const { body, id, index, velocity } = action;
       return { 
         ...state, 
         bodies: {
@@ -78,8 +79,21 @@ export default function reduce(state = initialState, action, actions = {}) {
         note: {
           id,
           index,
+          velocity,
         },
       };
+    }
+
+    case actions.PLAY_NOTE_COLLISION: {
+      const { id, index, velocity } = action;
+      return { 
+        ...state,
+        note: {
+          id,
+          index,
+          velocity,
+        },
+      }
     }
 
     case actions.POPULATE: {

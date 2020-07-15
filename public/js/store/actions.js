@@ -3,6 +3,7 @@ import { createUUID } from '../utils/utils.js';
 const DELETE_BODIES = 'DELETE_BODIES';
 const NEW_PROJECT = 'NEW_PROJECT';
 const PLAY_NOTE = 'PLAY_NOTE';
+const PLAY_NOTE_COLLISION = 'PLAY_NOTE_COLLISION';
 const POPULATE = 'POPULATE';
 const RESIZE = 'RESIZE';
 const SET_PROJECT = 'SET_PROJECT';
@@ -24,16 +25,24 @@ export default {
         type: PLAY_NOTE,
         id: createUUID(),
         index,
+        velocity: 120,
         body: {
           fixtures: [
             { type: 'circle', r: 0.2, d: 0.1 },
           ],
-          x: 0,
+          x: visibleWidth * ((index / 8 ) - 0.5),
           y: visibleHeight * -0.5,
         },
       };
     };
   },
+
+  PLAY_NOTE_COLLISION,
+  playNoteCollision: (index, force) => ({
+    type: PLAY_NOTE_COLLISION,
+    index,
+    velocity: Math.floor(Math.max(1, Math.min(force * 127, 127))),
+  }),
 
   POPULATE,
   populate: () => {

@@ -153,6 +153,20 @@ function launchNoteBody(state) {
 }
 
 /**
+ * Handle collision on a note circle.
+ * @param {Number} index Note index.
+ * @param {Object} contact 
+ * @param {Object} impulse 
+ * @param {Function} sumArrayValues 
+ */
+function noteCollision(index, contact, impulse, sumArrayValues) {
+  if (!contact.force) {
+    contact.force = impulse.normalImpulses.reduce(sumArrayValues) + impulse.tangentImpulses.reduce(sumArrayValues);
+  }
+  dispatch(getActions().playNoteCollision(index, contact.force));
+}
+
+/**
  * Handle changes in the app state.
  * @param {Object} e CustomEvent from Store when state has been updated.
  */
@@ -193,6 +207,7 @@ export function setup() {
  * Set up the Box2D planck.js physics world.
  */
 function setupPhysicsWorld() {
+  const sumArrayValues = (accumulator, currentValue) => accumulator + currentValue;
   const gravity = new Vec2(0, -9.8);
   world = new World(gravity);
 
@@ -223,15 +238,11 @@ function setupPhysicsWorld() {
       const { noteIndex: noteIndexA = -1 } = contact.getFixtureA().getBody().getUserData();
       const { noteIndex: noteIndexB = -1 } = contact.getFixtureB().getBody().getUserData();
       if (noteIndexA > -1) {
-        console.log(noteIndexA);
+        noteCollision(noteIndexA, contact, impulse, sumArrayValues);
       }
       if (noteIndexB > -1) {
-        console.log(noteIndexB);
+        noteCollision(noteIndexB, contact, impulse, sumArrayValues);
       }
-      // sendMIDIOnContact(bodyIdA, contact, impulse);
-      // if (performerIdA !== performerIdB) {
-      //   sendMIDIOnContact(bodyIdB, contact, impulse);
-      // }
     }
   });
 }
