@@ -2,6 +2,7 @@ import { dispatch, getActions, STATE_CHANGE, } from '../store/store.js';
 import addWindowResizeCallback from '../view/windowresize.js';
 import { connect3DAndPhysics, } from './physics.js';
 import { createMesh } from './webgl-factory.js';
+import { setLineMaterialResolution } from './webgl-helper.js';
 import { 
   AmbientLight,
   DirectionalLight,
@@ -17,7 +18,7 @@ import {
   Vector2,
   Vector3,
   WebGLRenderer 
-} from '../lib/three.module.js';
+} from '../lib/three/build/three.module.js';
 
 let camera,
   canvasRect,
@@ -128,6 +129,9 @@ function onWindowResize(isFirstRun = false) {
   let targetZ = canvasRect.height / (2 * Math.tan(fieldOfView / 2));
 
   camera.position.set(camera.position.x, camera.position.y, targetZ * scale);
+
+  // line material needs to update to render correctly
+  setLineMaterialResolution();
 
   // orbitControls.saveState();
 

@@ -6,7 +6,8 @@ import {
   Mesh, 
   MeshLambertMaterial, 
   SphereGeometry 
-} from '../lib/three.module.js';
+} from '../lib/three/build/three.module.js';
+import { createCircleOutline } from './webgl-helper.js';
 
 /**
  * Create a 3D mesh on basis of the configuration data.
@@ -16,10 +17,20 @@ import {
  */
 export function createMesh(bodyId, bodyConfig) {
   const { fixtures, x, y, z = 0, } = bodyConfig;
+  const { type = 'box', r = 1, w = 1, h = 1 } = fixtures[0];
+  let mesh;
 
-  const bufferGeometry = createGeometry(fixtures);
-  const material = new MeshLambertMaterial({ color: 0x333333 });
-  const mesh = new Mesh(bufferGeometry, material);
+  switch (type) {
+    case 'circle':
+      mesh = createCircleOutline(r);
+      break;
+
+    default:
+      const bufferGeometry = createGeometry(fixtures);
+      const material = new MeshLambertMaterial({ color: 0x333333 });
+      mesh = new Mesh(bufferGeometry, material);
+  }
+  
   mesh.position.set(x, y, z);
   mesh.name = bodyId;
   return mesh;
@@ -31,7 +42,7 @@ export function createMesh(bodyId, bodyConfig) {
  * @param {Array} fixturesConfig
  * @returns {Object} bufferGeometry
  */
-export function createGeometry(fixturesConfig = []) {
+function createGeometry(fixturesConfig = []) {
   const singleGeometry = new Geometry();
 
   fixturesConfig.forEach(fixture => {
