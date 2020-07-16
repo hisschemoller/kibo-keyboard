@@ -55,6 +55,5 @@ function handleStateChanges(e) {
 
 export function setup() {
   rootEl = document.querySelector('#controls');
-
   addEventListeners();
 }

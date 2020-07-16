@@ -1,4 +1,4 @@
-import { createUUID } from '../utils/utils.js';
+import { createUUID, pitches } from '../utils/utils.js';
 
 const DELETE_BODIES = 'DELETE_BODIES';
 const NEW_PROJECT = 'NEW_PROJECT';

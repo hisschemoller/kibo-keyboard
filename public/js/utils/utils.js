@@ -8,3 +8,5 @@ export function createUUID() {
       return v.toString(16);
   });
 }
+
+export let pitches = [67, 69, 71, 72, 60, 62, 64, 65];

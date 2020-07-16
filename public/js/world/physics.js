@@ -163,7 +163,14 @@ function noteCollision(index, contact, impulse, sumArrayValues) {
   if (!contact.force) {
     contact.force = impulse.normalImpulses.reduce(sumArrayValues) + impulse.tangentImpulses.reduce(sumArrayValues);
   }
-  dispatch(getActions().playNoteCollision(index, contact.force));
+
+  // scale force to be in range 0 to 1
+  contact.force *= 0.2;
+
+  // ignore the smallest collisions
+  if (contact.force > 0.1) {
+    dispatch(getActions().playNoteCollision(index, contact.force));
+  }
 }
 
 /**

@@ -1,15 +1,16 @@
 import { dispatch, getActions, getState, STATE_CHANGE, } from '../store/store.js';
+import { pitches } from '../utils/utils.js';
 
 const NOTE_ON = 144;
 const NOTE_OFF = 128;
 const numVoices = 32;
-const pitches = new Array(127).fill(null);
+const pitchRange = new Array(127).fill(null);
 const voices = [];
 let audioCtx;
 let voiceIndex = 0;
 
 /**
- * 
+ * Create the bank of reusable voice objects.
  */
 function createVoices() {
 	for (let i = 0; i < numVoices; i++) {
@@ -53,14 +54,13 @@ function handleStateChanges(e) {
 	const { state, action, actions, } = e.detail;
 	switch (action.type) {
 
-		case actions.BLUETOOTH_CONNECT:
+		case actions.POPULATE:
 			initialiseAudio();
 			break;
 
 		case actions.PLAY_NOTE:
 		case actions.PLAY_NOTE_COLLISION:
-			console.log(state.note);
-			// handleMIDI(state);
+			playNote(state);
 			break;
 	}
 }
@@ -84,6 +84,12 @@ function mtof(midi) {
 	else if (midi > 1499) return 3.282417553401589e+38;
 	else return 440.0 * Math.pow(2, (Math.floor(midi) - 69) / 12.0);
 };
+
+function playNote(state) {
+	const { index, velocity } = state.note;
+	const pitch = pitches[index];
+	console.log(pitch, velocity);
+}
 
 /**
  * Setup at app start.
