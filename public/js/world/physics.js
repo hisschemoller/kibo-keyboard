@@ -165,10 +165,10 @@ function noteCollision(index, contact, impulse, sumArrayValues) {
   }
 
   // scale force to be in range 0 to 1
-  contact.force *= 0.2;
+  contact.force *= 0.15;
 
   // ignore the smallest collisions
-  if (contact.force > 0.1) {
+  if (contact.force > 0.05) {
     dispatch(getActions().playNoteCollision(index, contact.force));
   }
 }

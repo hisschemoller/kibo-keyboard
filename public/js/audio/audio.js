@@ -85,10 +85,16 @@ function mtof(midi) {
 	else return 440.0 * Math.pow(2, (Math.floor(midi) - 69) / 12.0);
 };
 
+/**
+ * Play a note.
+ * @param {Object} state Application state.
+ */
 function playNote(state) {
 	const { index, velocity } = state.note;
 	const pitch = pitches[index];
 	console.log(pitch, velocity);
+	startNote(0, pitch, velocity);
+	stopNote(0.5, pitch, velocity);
 }
 
 /**
@@ -118,8 +124,9 @@ function startNote(nowToStartInSecs, pitch, velocity) {
 	voice.osc.connect(voice.gain);
 	voice.osc.start(startTime);
 	voice.gain.gain.setValueAtTime(velocity / 127, startTime);
+	voice.gain.gain.exponentialRampToValueAtTime(0.0001, startTime + 0.5);
 
-	pitches[pitch] = voice;
+	pitchRange[pitch] = voice;
 }
 
 /**
@@ -129,9 +136,9 @@ function startNote(nowToStartInSecs, pitch, velocity) {
  * @param {*} velocity 
  */
 function stopNote(nowToStopInSecs, pitch, velocity) {
-	if (pitches[pitch]) {
-		pitches[pitch].osc.stop(nowToStopInSecs);
-		pitches[pitch].isPlaying = false;
-		pitches[pitch] = null;
+	if (pitchRange[pitch]) {
+		pitchRange[pitch].osc.stop(audioCtx.currentTime + nowToStopInSecs);
+		pitchRange[pitch].isPlaying = false;
+		pitchRange[pitch] = null;
 	}
 }
