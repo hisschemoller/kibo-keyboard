@@ -9,4 +9,4 @@ export function createUUID() {
   });
 }
 
-export let pitches = [67, 69, 71, 72, 60, 62, 64, 65];
+export let pitches = [60, 62, 64, 65, 67, 69, 71, 72];

@@ -50,6 +50,7 @@ export function connect3DAndPhysics(scene) {
 function createBodies(state) {
   state.bodies.allIds.forEach(bodyId => {
     if (world.bodies.allIds.indexOf(bodyId) === -1) {
+      console.log(state.bodies.byId[bodyId].index);
       createPhysicsBody(bodyId, state.bodies.byId[bodyId], { noteIndex: state.bodies.byId[bodyId].index });
     }
   });
@@ -244,6 +245,7 @@ function setupPhysicsWorld() {
     if (!contact.force) {
       const { noteIndex: noteIndexA = -1 } = contact.getFixtureA().getBody().getUserData();
       const { noteIndex: noteIndexB = -1 } = contact.getFixtureB().getBody().getUserData();
+      console.log(noteIndexA, noteIndexB);
       if (noteIndexA > -1) {
         noteCollision(noteIndexA, contact, impulse, sumArrayValues);
       }

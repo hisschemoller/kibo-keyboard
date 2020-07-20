@@ -1,0 +1,99 @@
+.panel__header {
+	font-weight: bold;
+}
+.panel__viewport {
+
+}
+.panel__content {
+}
+.panel__section {
+	border-top: 1px solid #000;
+	display: flex;
+	margin: 10px 0;
+	padding-top: 10px;
+}
+.panel__section-left {
+	flex-basis: 50%;
+}
+.panel__section-right {
+	flex-basis: 50%;
+}
+.panel__section-right select {
+	border: 1px solid #000;
+	border-radius: 0;
+	background-color: transparent;
+	font-size: 16px;
+	padding: 5px 10px;
+}
+.panel__section-right button {
+	border: 1px solid #000;
+	border-radius: 0;
+	background-color: transparent;
+	font-size: 16px;
+	padding: 5px 10px;
+}
+.panel__section-right span {
+	display: block;
+	padding: 10px 0 0 0;
+}
+
+.settings {
+		bottom: 0;
+		display: none;
+		left: 0;
+		position: fixed;
+		right: 0;
+		top: 0;
+		z-index: 1;
+}
+.settings.settings--show {
+	display: block;
+}
+.settings[data-show='true'] {
+		display: block;
+}
+.settings__layer {
+		background-color: rgba(0, 0, 0, 0.4);
+		bottom: 0;
+		left: 0;
+		position: absolute;
+		right: 0;
+		top: 0;
+}
+.settings__window {
+		background-color: #fff;
+		left: 50%;
+		width: 400px;
+		position: absolute;
+		top: 50%;
+		transform: translate(-50%, -50%);
+}
+.settings__window.panel {
+	display: block;
+	padding: 20px;
+}
+.settings__body {
+	display: block;
+	padding: 10px 20px;
+}
+.settings__controls {
+		padding: 10px 20px 20px 20px;
+}
+.settings__reject {
+		
+}
+.settings__agree {
+		
+}
+.settings__controls .btn {
+	background-color: #ddd;
+	border: none;
+	color: #333;
+	font-size: 14px;
+	padding: 8px 16px;
+	width: auto;
+}
+.settings__controls .btn:hover {
+	background-color: #ccc;
+	color: #000;
+}

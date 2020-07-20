@@ -1,5 +1,9 @@
 import { createUUID, pitches } from '../utils/utils.js';
 
+const BLUETOOTH_CONNECT = 'BLUETOOTH_CONNECT';
+const BLUETOOTH_DISCONNECT = 'BLUETOOTH_DISCONNECT';
+const BLUETOOTH_ERROR = 'BLUETOOTH_ERROR';
+const BLUETOOTH_SUCCESS = 'BLUETOOTH_SUCCESS';
 const DELETE_BODIES = 'DELETE_BODIES';
 const NEW_PROJECT = 'NEW_PROJECT';
 const PLAY_NOTE = 'PLAY_NOTE';
@@ -7,9 +11,22 @@ const PLAY_NOTE_COLLISION = 'PLAY_NOTE_COLLISION';
 const POPULATE = 'POPULATE';
 const RESIZE = 'RESIZE';
 const SET_PROJECT = 'SET_PROJECT';
+const TOGGLE_SETTINGS = 'TOGGLE_SETTINGS';
 
 // actions
 export default {
+
+  BLUETOOTH_CONNECT,
+  bluetoothConnect: () => ({ type: BLUETOOTH_CONNECT }),
+
+  BLUETOOTH_DISCONNECT,
+  bluetoothDisconnect: () => ({ type: BLUETOOTH_DISCONNECT }),
+
+  BLUETOOTH_ERROR,
+  bluetoothError: () => ({ type: BLUETOOTH_ERROR }),
+
+  BLUETOOTH_SUCCESS,
+  bluetoothSuccess: () => ({ type: BLUETOOTH_SUCCESS }),
 
   DELETE_BODIES,
   deleteBodies: bodyIds => ({ type: DELETE_BODIES, bodyIds }),
@@ -30,7 +47,7 @@ export default {
           fixtures: [
             { type: 'circle', r: 0.2, d: 0.1 },
           ],
-          x: visibleWidth * ((index / 8 ) - 0.5),
+          x: visibleWidth * ((index / 8 ) - ( 7 / 16)),
           y: visibleHeight * -0.5,
         },
       };
@@ -79,4 +96,7 @@ export default {
   
   SET_PROJECT,
   setProject: state => ({ type: SET_PROJECT, state }),
+
+  TOGGLE_SETTINGS,
+  toggleSettings: value => ({ type: TOGGLE_SETTINGS, value }),
 };

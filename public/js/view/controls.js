@@ -1,7 +1,7 @@
 import { dispatch, getActions, getState, STATE_CHANGE, } from '../store/store.js';
 import { getWorld } from '../world/physics.js';
 
-let rootEl;
+let rootEl, settingsBtn;
 let resetKeyCombo = [];
 
 function addEventListeners() {
@@ -45,6 +45,10 @@ function addEventListeners() {
   document.addEventListener('keyup', () => {
     resetKeyCombo.length = 0;
   });
+
+  settingsBtn.addEventListener('click',e => {
+    dispatch(getActions().toggleSettings(true));
+  });
 }
 
 function handleStateChanges(e) {
@@ -55,5 +59,6 @@ function handleStateChanges(e) {
 
 export function setup() {
   rootEl = document.querySelector('#controls');
+  settingsBtn = rootEl.querySelector('#controls__settings');
   addEventListeners();
 }

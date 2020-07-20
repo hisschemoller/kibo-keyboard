@@ -4,6 +4,7 @@ const initialState = {
     allIds: [],
     byId: {},
   },
+  isSettingsVisible: false,
   joints: {
     allIds: [],
     byId: {},
@@ -65,7 +66,7 @@ export default function reduce(state = initialState, action, actions = {}) {
     case actions.PLAY_NOTE: {
       const { body, id, index, velocity } = action;
       return { 
-        ...state, 
+        ...state,
         bodies: {
           allIds: [ ...state.bodies.allIds, id ],
           byId: { 
@@ -89,7 +90,7 @@ export default function reduce(state = initialState, action, actions = {}) {
       return { 
         ...state,
         note: {
-          id,
+          id: 'collision',
           index,
           velocity,
         },
@@ -109,6 +110,11 @@ export default function reduce(state = initialState, action, actions = {}) {
     case actions.SET_PROJECT: {
       const { visibleWidth, visibleHeight } = state;
       return { ...state, ...action.state, visibleHeight, visibleWidth, };
+    }
+
+    case actions.TOGGLE_SETTINGS: {
+      const { value } = action;
+      return { ...state, isSettingsVisible: value };
     }
 
     default:

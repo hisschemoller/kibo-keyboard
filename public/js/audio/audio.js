@@ -90,7 +90,7 @@ function mtof(midi) {
  * @param {Object} state Application state.
  */
 function playNote(state) {
-	const { index, velocity } = state.note;
+	const { id, index, velocity } = state.note;
 	const pitch = pitches[index];
 	console.log(pitch, velocity);
 	startNote(0, pitch, velocity);
@@ -123,7 +123,7 @@ function startNote(nowToStartInSecs, pitch, velocity) {
 	voice.osc.frequency.setValueAtTime(mtof(pitch), startTime);
 	voice.osc.connect(voice.gain);
 	voice.osc.start(startTime);
-	voice.gain.gain.setValueAtTime(velocity / 127, startTime);
+	voice.gain.gain.setValueAtTime(velocity**2 / 127**2, startTime);
 	voice.gain.gain.exponentialRampToValueAtTime(0.0001, startTime + 0.5);
 
 	pitchRange[pitch] = voice;
