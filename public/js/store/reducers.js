@@ -4,11 +4,15 @@ const initialState = {
     allIds: [],
     byId: {},
   },
+  isMIDIAccessable: false,
   isSettingsVisible: false,
   joints: {
     allIds: [],
     byId: {},
   },
+  midiInputs: [],
+  midiOutputs: [],
+  midiSelectedInput: null,
   note: {
     id: null,
     index: -1,
@@ -54,8 +58,10 @@ export default function reduce(state = initialState, action, actions = {}) {
 
     case actions.NEW_PROJECT: {
       const { bodies } = action;
-      return {  ...initialState,
+      return { 
+        ...initialState,
         bodies,
+        isMIDIAccessable: state.isMIDIAccessable,
         joints: {
           allIds: [],
           byId: {},
@@ -107,14 +113,46 @@ export default function reduce(state = initialState, action, actions = {}) {
       return { ...state, visibleWidth, visibleHeight };
     }
 
+    case actions.SET_MIDI_ACCESSABLE: {
+      const { value } = action;
+      return { ...state, isMIDIAccessable: value };
+    }
+
     case actions.SET_PROJECT: {
-      const { visibleWidth, visibleHeight } = state;
-      return { ...state, ...action.state, visibleHeight, visibleWidth, };
+      const { isMIDIAccessable, midiInputs = [], midiOutputs = [], visibleWidth, visibleHeight } = state;
+      return { 
+        ...initialState,
+        bodies: {
+          allIds: [],
+          byId: {},
+        },
+        joints: {
+          allIds: [],
+          byId: {},
+        },
+        ...state, 
+        ...action.state,
+        isMIDIAccessable, 
+        midiInputs, 
+        midiOutputs, 
+        visibleHeight, 
+        visibleWidth,
+      };
     }
 
     case actions.TOGGLE_SETTINGS: {
       const { value } = action;
       return { ...state, isSettingsVisible: value };
+    }
+
+    case actions.UPDATE_MIDI_PORTS: {
+      const { portNames, portType, } = action;
+      const { midiInputs = [], midiOutputs = [], } = state;
+      return {
+        ...state,
+        midiInputs: portType === 'input' ? [ ...portNames ] : midiInputs,
+        midiOutputs: portType === 'output' ? [ ...portNames ] : midiOutputs,
+      };
     }
 
     default:

@@ -10,8 +10,10 @@ const PLAY_NOTE = 'PLAY_NOTE';
 const PLAY_NOTE_COLLISION = 'PLAY_NOTE_COLLISION';
 const POPULATE = 'POPULATE';
 const RESIZE = 'RESIZE';
+const SET_MIDI_ACCESSABLE = 'SET_MIDI_ACCESSABLE';
 const SET_PROJECT = 'SET_PROJECT';
 const TOGGLE_SETTINGS = 'TOGGLE_SETTINGS';
+const UPDATE_MIDI_PORTS = 'UPDATE_MIDI_PORTS';
 
 // actions
 export default {
@@ -93,10 +95,16 @@ export default {
 
   RESIZE,
   resize: (visibleWidth, visibleHeight) => ({ type: RESIZE, visibleWidth, visibleHeight }),
+
+  SET_MIDI_ACCESSABLE,
+  setMidiAccessable: value => ({ type: SET_MIDI_ACCESSABLE, value }),
   
   SET_PROJECT,
   setProject: state => ({ type: SET_PROJECT, state }),
 
   TOGGLE_SETTINGS,
   toggleSettings: value => ({ type: TOGGLE_SETTINGS, value }),
+
+  UPDATE_MIDI_PORTS,
+  updateMIDIPorts: (portNames, portType) => ({ type: UPDATE_MIDI_PORTS, portNames, portType, }),
 };
