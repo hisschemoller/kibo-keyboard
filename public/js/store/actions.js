@@ -43,7 +43,8 @@ export default {
     return (dispatch, getState, getActions) => {
       const { visibleWidth, visibleHeight, } = getState();
       const index = pitches.indexOf(pitch);
-      
+      const octave = Math.max(-2, Math.min(Math.round((velocity - 80) / 20), 2));
+
       if (index === -1 || velocity === 0 || command === NOTE_OFF) {
         return;
       }
@@ -52,6 +53,7 @@ export default {
         type: PLAY_NOTE,
         bodyId: createUUID(),
         index,
+        octave,
         velocity,
         body: {
           fixtures: [
@@ -65,9 +67,10 @@ export default {
   },
 
   PLAY_NOTE_COLLISION,
-  playNoteCollision: (index, force) => ({
+  playNoteCollision: (index, octave, force) => ({
     type: PLAY_NOTE_COLLISION,
     index,
+    octave,
     velocity: Math.floor(Math.max(1, Math.min(force * 127, 127))),
   }),
 

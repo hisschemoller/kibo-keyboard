@@ -93,8 +93,8 @@ function mtof(midi) {
  * @param {Object} state Application state.
  */
 function playNote(state) {
-	const { bodyId, index, velocity } = state.note;
-	const pitch = pitches[index];
+	const { bodyId, index, octave, velocity } = state.note;
+	const pitch = pitches[index] + (octave * 12);
 	if (audioCtx) {
 		startNote(0, pitch, velocity);
 		stopNote(0.5, pitch, velocity);

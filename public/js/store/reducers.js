@@ -16,6 +16,7 @@ const initialState = {
   note: {
     id: null,
     index: 0,
+    octave: 0,
     velocity: 0,
   },
   visibleHeight: 0,
@@ -70,7 +71,7 @@ export default function reduce(state = initialState, action, actions = {}) {
     }
 
     case actions.PLAY_NOTE: {
-      const { body, bodyId, index, velocity } = action;
+      const { body, bodyId, index, octave, velocity } = action;
       return { 
         ...state,
         bodies: {
@@ -86,18 +87,20 @@ export default function reduce(state = initialState, action, actions = {}) {
         note: {
           bodyId,
           index,
+          octave,
           velocity,
         },
       };
     }
 
     case actions.PLAY_NOTE_COLLISION: {
-      const { index, velocity } = action;
+      const { index, octave, velocity } = action;
       return { 
         ...state,
         note: {
           id: 'collision',
           index,
+          octave,
           velocity,
         },
       }
