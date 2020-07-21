@@ -22,7 +22,8 @@ async function main() {
     persist();
     setupMidi();
     dispatch(getActions().setMidiAccessable(hasMIDIAccess));
-    dispatch(getActions().toggleSettings(true))
+    dispatch(getActions().populate());
+    dispatch(getActions().toggleSettings(true));
   }
 }
 

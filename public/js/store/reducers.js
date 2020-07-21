@@ -15,7 +15,7 @@ const initialState = {
   midiSelectedInput: null,
   note: {
     id: null,
-    index: -1,
+    index: 0,
     velocity: 0,
   },
   visibleHeight: 0,
@@ -70,21 +70,21 @@ export default function reduce(state = initialState, action, actions = {}) {
     }
 
     case actions.PLAY_NOTE: {
-      const { body, id, index, velocity } = action;
+      const { body, bodyId, index, velocity } = action;
       return { 
         ...state,
         bodies: {
-          allIds: [ ...state.bodies.allIds, id ],
+          allIds: [ ...state.bodies.allIds, bodyId ],
           byId: { 
             ...state.bodies.allIds.reduce((accumulator, bodyId) => {
               accumulator[bodyId] = { ...state.bodies.byId[bodyId] };
               return accumulator;
             }, {}),
-            [id]: body,
+            [bodyId]: body,
           }
         }, 
         note: {
-          id,
+          bodyId,
           index,
           velocity,
         },
@@ -92,7 +92,7 @@ export default function reduce(state = initialState, action, actions = {}) {
     }
 
     case actions.PLAY_NOTE_COLLISION: {
-      const { id, index, velocity } = action;
+      const { index, velocity } = action;
       return { 
         ...state,
         note: {
@@ -111,6 +111,10 @@ export default function reduce(state = initialState, action, actions = {}) {
     case actions.RESIZE: {
       const { visibleWidth, visibleHeight } = action;
       return { ...state, visibleWidth, visibleHeight };
+    }
+
+    case actions.SELECT_MIDI_INPUT: {
+      return { ...state, midiSelectedInput: action.name, };
     }
 
     case actions.SET_MIDI_ACCESSABLE: {

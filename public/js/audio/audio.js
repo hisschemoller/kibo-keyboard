@@ -54,8 +54,8 @@ function handleStateChanges(e) {
 	const { state, action, actions, } = e.detail;
 	switch (action.type) {
 
-		case actions.POPULATE:
-			initialiseAudio();
+		case actions.TOGGLE_SETTINGS:
+			initialiseAudio(state);
 			break;
 
 		case actions.PLAY_NOTE:
@@ -69,9 +69,12 @@ function handleStateChanges(e) {
  * Audio initialised after user generated event.
  * In this case a click on the Bluetooth connect button.
  */
-function initialiseAudio() {
-	audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-	createVoices();
+function initialiseAudio(state) {
+	const { isSettingsVisible } = state;
+	if (!audioCtx && !isSettingsVisible) {
+		audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+		createVoices();
+	}
 }
 
 /**
@@ -90,11 +93,12 @@ function mtof(midi) {
  * @param {Object} state Application state.
  */
 function playNote(state) {
-	const { id, index, velocity } = state.note;
+	const { bodyId, index, velocity } = state.note;
 	const pitch = pitches[index];
-	console.log(pitch, velocity);
-	startNote(0, pitch, velocity);
-	stopNote(0.5, pitch, velocity);
+	if (audioCtx) {
+		startNote(0, pitch, velocity);
+		stopNote(0.5, pitch, velocity);
+	}
 }
 
 /**

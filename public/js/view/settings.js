@@ -12,11 +12,19 @@ function addEventListeners() {
 	layerEl.addEventListener('click', e => {
 		dispatch(getActions().toggleSettings(false));
 	});
+
+  midiInputsSelect.addEventListener('change', e => {
+    dispatch(getActions().selectMIDIInput(e.target.value));
+  });
 }
 
 function handleStateChanges(e) {
   const { state, action, actions, } = e.detail;
   switch (action.type) {
+
+    case actions.SELECT_MIDI_INPUT:
+      updateMIDIInputs(state);
+      break;
 
 		case actions.SET_MIDI_ACCESSABLE:
 			showMIDIAccessable(state);

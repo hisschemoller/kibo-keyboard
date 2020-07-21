@@ -1,4 +1,5 @@
 import { createUUID, pitches } from '../utils/utils.js';
+import { NOTE_OFF } from '../midi/midi.js';
 
 const BLUETOOTH_CONNECT = 'BLUETOOTH_CONNECT';
 const BLUETOOTH_DISCONNECT = 'BLUETOOTH_DISCONNECT';
@@ -10,6 +11,7 @@ const PLAY_NOTE = 'PLAY_NOTE';
 const PLAY_NOTE_COLLISION = 'PLAY_NOTE_COLLISION';
 const POPULATE = 'POPULATE';
 const RESIZE = 'RESIZE';
+const SELECT_MIDI_INPUT = 'SELECT_MIDI_INPUT';
 const SET_MIDI_ACCESSABLE = 'SET_MIDI_ACCESSABLE';
 const SET_PROJECT = 'SET_PROJECT';
 const TOGGLE_SETTINGS = 'TOGGLE_SETTINGS';
@@ -37,14 +39,20 @@ export default {
   newProject: () => ({ type: NEW_PROJECT, }),
 
   PLAY_NOTE,
-  playNote: index => {
+  playNote: (command, channel, pitch, velocity) => {
     return (dispatch, getState, getActions) => {
       const { visibleWidth, visibleHeight, } = getState();
+      const index = pitches.indexOf(pitch);
+      
+      if (index === -1 || velocity === 0 || command === NOTE_OFF) {
+        return;
+      }
+
       return {
         type: PLAY_NOTE,
-        id: createUUID(),
+        bodyId: createUUID(),
         index,
-        velocity: 120,
+        velocity,
         body: {
           fixtures: [
             { type: 'circle', r: 0.2, d: 0.1 },
@@ -68,8 +76,6 @@ export default {
     return (dispatch, getState, getActions) => {
       const { visibleWidth, visibleHeight, } = getState();
       const floorId = `FLOOR_${createUUID()}`;
-      const leftId = createUUID();
-      const rightId = createUUID();
       return { 
         type: POPULATE, 
         bodies: {
@@ -95,6 +101,9 @@ export default {
 
   RESIZE,
   resize: (visibleWidth, visibleHeight) => ({ type: RESIZE, visibleWidth, visibleHeight }),
+
+  SELECT_MIDI_INPUT,
+  selectMIDIInput: name => ({ type: SELECT_MIDI_INPUT, name, }),
 
   SET_MIDI_ACCESSABLE,
   setMidiAccessable: value => ({ type: SET_MIDI_ACCESSABLE, value }),

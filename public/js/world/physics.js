@@ -50,8 +50,7 @@ export function connect3DAndPhysics(scene) {
 function createBodies(state) {
   state.bodies.allIds.forEach(bodyId => {
     if (world.bodies.allIds.indexOf(bodyId) === -1) {
-      console.log(state.bodies.byId[bodyId].index);
-      createPhysicsBody(bodyId, state.bodies.byId[bodyId], { noteIndex: state.bodies.byId[bodyId].index });
+      createPhysicsBody(bodyId, state.bodies.byId[bodyId]);
     }
   });
 
@@ -145,10 +144,10 @@ export function getWorld() {
  */
 function launchNoteBody(state) {
   const { note } = state;
-  const { id, index } = note; 
+  const { bodyId, index } = note;
   const x = (Math.random() * 0.1) - 0.05;
   const y = 10 + Math.random() * 10;
-  const body = world.bodies.byId[id];
+  const body = world.bodies.byId[bodyId];
   body.setUserData({ ...body.getUserData(), noteIndex: index });
   body.setLinearVelocity(Vec2(x, y));
 }
@@ -245,7 +244,7 @@ function setupPhysicsWorld() {
     if (!contact.force) {
       const { noteIndex: noteIndexA = -1 } = contact.getFixtureA().getBody().getUserData();
       const { noteIndex: noteIndexB = -1 } = contact.getFixtureB().getBody().getUserData();
-      console.log(noteIndexA, noteIndexB);
+      
       if (noteIndexA > -1) {
         noteCollision(noteIndexA, contact, impulse, sumArrayValues);
       }

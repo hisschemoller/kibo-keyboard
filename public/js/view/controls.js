@@ -1,5 +1,7 @@
 import { dispatch, getActions, getState, STATE_CHANGE, } from '../store/store.js';
 import { getWorld } from '../world/physics.js';
+import { pitches } from '../utils/utils.js';
+import { NOTE_ON } from '../midi/midi.js';
 
 let rootEl, settingsBtn;
 let resetKeyCombo = [];
@@ -36,7 +38,7 @@ function addEventListeners() {
         case 54:
         case 55:
         case 56: // 8
-          dispatch(getActions().playNote(e.keyCode - 49));
+          dispatch(getActions().playNote(NOTE_ON, 1, pitches[e.keyCode - 49], 120));
           break;
       }
     }
