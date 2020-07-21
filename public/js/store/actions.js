@@ -43,7 +43,8 @@ export default {
     return (dispatch, getState, getActions) => {
       const { visibleWidth, visibleHeight, } = getState();
       const index = pitches.indexOf(pitch);
-      const octave = Math.max(-2, Math.min(Math.round((velocity - 80) / 20), 2));
+      // const octave = Math.max(-2, Math.min(Math.round((velocity - 80) / 20), 2));
+      const octave = Math.round((velocity / 127) * 4) - 2;
       const radius = 0.6 - (((octave + 2) / 4) * 0.5);
 
       if (index === -1 || velocity === 0 || command === NOTE_OFF) {
@@ -55,7 +56,7 @@ export default {
         bodyId: createUUID(),
         index,
         octave,
-        velocity,
+        velocity: 120,
         body: {
           fixtures: [
             { type: 'circle', r: radius, d: 0.01 },

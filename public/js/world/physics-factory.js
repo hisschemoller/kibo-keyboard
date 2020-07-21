@@ -204,7 +204,7 @@ function createFixtureDefinition(fixtureConfig) {
     cy = 0,
     angle = 0,
     density = 1,
-    friction = 0.5,
+    friction = 0.7,
     restitution = 0.8,
     filterCategoryBits = 0x0001,
     filterMaskBits = 0x0001,
