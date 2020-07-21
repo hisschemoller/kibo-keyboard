@@ -171,7 +171,7 @@ export function setup() {
  */
 function setupWebGLWorld() {
   renderer = new WebGLRenderer({ antialias: true });
-  renderer.setClearColor(0xeeeeee);
+  renderer.setClearColor(0xffffff);
   
   rootEl.appendChild(renderer.domElement);
 

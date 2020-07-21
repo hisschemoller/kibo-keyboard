@@ -13,7 +13,7 @@ import { LineGeometry } from '../lib/three/examples/jsm/lines/LineGeometry.js';
 
 const defaultSegments = 64;
 const defaultLineWidth = 2;
-const defaultLineColor = 0xdddddd;
+const defaultLineColor = 0x000000;
 
 /** 
  * Cache of circle outlines, so they can be cloned once created.

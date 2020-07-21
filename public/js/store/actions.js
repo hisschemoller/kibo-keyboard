@@ -44,6 +44,7 @@ export default {
       const { visibleWidth, visibleHeight, } = getState();
       const index = pitches.indexOf(pitch);
       const octave = Math.max(-2, Math.min(Math.round((velocity - 80) / 20), 2));
+      const radius = 0.6 - (((octave + 2) / 4) * 0.5);
 
       if (index === -1 || velocity === 0 || command === NOTE_OFF) {
         return;
@@ -57,7 +58,7 @@ export default {
         velocity,
         body: {
           fixtures: [
-            { type: 'circle', r: 0.2, d: 0.1 },
+            { type: 'circle', r: radius, d: 0.01 },
           ],
           x: visibleWidth * ((index / 8 ) - ( 7 / 16)),
           y: visibleHeight * -0.5,
@@ -85,13 +86,13 @@ export default {
           allIds: [ floorId, 'ceiling' ],
           byId: {
             [floorId]: {
-              fixtures: [ { w: visibleWidth, h: 0.1, d: 0.1, } ],
+              fixtures: [ { w: visibleWidth, h: 0.01, d: 0.01, } ],
               x: 0,
               y: visibleHeight * -0.4,
               type: 'static',
             },
             ceiling: {
-              fixtures: [ { w: visibleWidth, h: 0.1, d: 0.1, } ],
+              fixtures: [ { w: visibleWidth, h: 0.01, d: 0.01, } ],
               x: 0,
               y: visibleHeight * 0.5,
               type: 'static',
