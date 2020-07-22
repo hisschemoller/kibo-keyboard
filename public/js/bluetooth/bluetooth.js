@@ -67,7 +67,9 @@ function handleStateChanges(e) {
  */
 function onCharacteristicValueChanged(e) {
 	const { value } = e.target;
-	dispatch(getActions().handleMIDIMessage(value.getUint8(2), value.getUint8(3), value.getUint8(4)));
+	console.log('onCharacteristicValueChanged', value);
+	// dispatch(getActions().handleMIDIMessage(value.getUint8(2), value.getUint8(3), value.getUint8(4)));
+	dispatch(getActions().playNote(value.getUint8(2) & 0xf0, value.getUint8(2) & 0x0f, value.getUint8(3), value.getUint8(4)));
 }
 
 /**

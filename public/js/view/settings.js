@@ -1,6 +1,6 @@
 import { dispatch, getActions, getState, STATE_CHANGE, } from '../store/store.js';
 
-let rootEl, layerEl, closeBtn, midiInputsSelect, midiInputStatusEl;
+let rootEl, layerEl, closeBtn, bluetoothConnectBtn, bluetoothStatusEl, midiInputsSelect, midiInputStatusEl;
 
 function addEventListeners() {
 	document.addEventListener(STATE_CHANGE, handleStateChanges);
@@ -15,12 +15,35 @@ function addEventListeners() {
 
   midiInputsSelect.addEventListener('change', e => {
     dispatch(getActions().selectMIDIInput(e.target.value));
-  });
+	});
+	
+	bluetoothConnectBtn.addEventListener('click', e => {
+		dispatch(getActions().bluetoothConnect());
+	});
 }
 
 function handleStateChanges(e) {
   const { state, action, actions, } = e.detail;
   switch (action.type) {
+
+    case actions.BLUETOOTH_CONNECT:
+      bluetoothStatusEl.textContent = 'Connecting...';
+      bluetoothConnectBtn.setAttribute('disabled', 'disabled');
+      break;
+
+    case actions.BLUETOOTH_DISCONNECT:
+      bluetoothStatusEl.textContent = 'Bluetooth disconnected.';
+      bluetoothConnectBtn.removeAttribute('disabled');
+      break;
+
+    case actions.BLUETOOTH_ERROR:
+      bluetoothStatusEl.textContent = 'Bluetooth error!';
+      bluetoothConnectBtn.removeAttribute('disabled');
+      break;
+      
+    case actions.BLUETOOTH_SUCCESS:
+      bluetoothStatusEl.textContent = 'Bluetooth connected!';
+      break;
 
     case actions.SELECT_MIDI_INPUT:
       updateMIDIInputs(state);
@@ -46,6 +69,9 @@ export function setup() {
 	closeBtn = rootEl.querySelector('.settings__close');
 	midiInputsSelect = rootEl.querySelector('.midiin-select');
 	midiInputStatusEl = rootEl.querySelector('.midiin-status');
+	bluetoothConnectBtn = rootEl.querySelector('.ble-connect');
+	bluetoothStatusEl = rootEl.querySelector('.ble-status');
+	
   addEventListeners();
 }
 
