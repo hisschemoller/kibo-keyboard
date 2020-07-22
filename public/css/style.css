@@ -25,3 +25,57 @@ body {
   top: 20px;
   width: 20px;
 }
+#shapes {
+  bottom: 0;
+  display: flex;
+  left: 0;
+  position: absolute;
+  width: 100%;
+}
+.shape {
+  height: 100px;
+  width: 12.5%;
+}
+.shape:before {
+  background: transparent no-repeat center center;
+  background-size: 50%;
+  content: '';
+  display: block;
+  height: 100%;
+}
+.shape:nth-of-type(1):before {
+  background-image: url('../img/shape0.svg');
+}
+.shape:nth-of-type(2):before {
+  background-image: url('../img/shape1.svg');
+}
+.shape:nth-of-type(3):before {
+  background-image: url('../img/shape2.svg');
+}
+.shape:nth-of-type(4):before {
+  background-image: url('../img/shape3.svg');
+}
+.shape:nth-of-type(5):before {
+  background-image: url('../img/shape4.svg');
+}
+.shape:nth-of-type(6):before {
+  background-image: url('../img/shape5.svg');
+}
+.shape:nth-of-type(7):before {
+  background-image: url('../img/shape6.svg');
+}
+.shape:nth-of-type(8):before {
+  background-image: url('../img/shape7.svg');
+}
+
+@media (min-width: 770px) {
+  .shape:before {
+    background-size: 30%;
+  }
+}
+
+@media (min-width: 1024px) {
+  .shape:before {
+    background-size: 25%;
+  }
+}
