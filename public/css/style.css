@@ -33,12 +33,12 @@ body {
   width: 100%;
 }
 .shape {
-  height: 100px;
+  height: 10vh;
   width: 12.5%;
 }
 .shape:before {
   background: transparent no-repeat center center;
-  background-size: 50%;
+  background-size: 60%;
   content: '';
   display: block;
   height: 100%;
@@ -70,11 +70,17 @@ body {
 
 @media (min-width: 770px) {
   .shape:before {
-    background-size: 30%;
+    background-size: 40%;
   }
 }
 
 @media (min-width: 1024px) {
+  .shape:before {
+    background-size: 30%;
+  }
+}
+
+@media (min-width: 1440px) {
   .shape:before {
     background-size: 25%;
   }

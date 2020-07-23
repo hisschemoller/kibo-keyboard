@@ -80,11 +80,13 @@ export default {
   populate: () => {
     return (dispatch, getState, getActions) => {
       const { visibleWidth, visibleHeight, } = getState();
+      console.log(visibleHeight);
       const floorId = `FLOOR_${createUUID()}`;
+      const ceilingId = `CEILING_${createUUID()}`;
       return { 
         type: POPULATE, 
         bodies: {
-          allIds: [ floorId, 'ceiling' ],
+          allIds: [ floorId, ceilingId ],
           byId: {
             [floorId]: {
               fixtures: [ { w: visibleWidth, h: 0.01, d: 0.01, } ],
@@ -92,7 +94,7 @@ export default {
               y: visibleHeight * -0.4,
               type: 'static',
             },
-            ceiling: {
+            [ceilingId]: {
               fixtures: [ { w: visibleWidth, h: 0.01, d: 0.01, } ],
               x: 0,
               y: visibleHeight * 0.5,

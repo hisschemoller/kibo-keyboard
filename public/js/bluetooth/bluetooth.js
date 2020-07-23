@@ -26,13 +26,17 @@ async function connect() {
 		console.log('> bluetooth device found');
 		if (!device.gatt.connected) {
 			console.log('> bluetooth device connecting...');
+			console.log('> bluetooth device', device);
+			console.log('> bluetooth device.gatt', device.gatt);
 			server = await device.gatt.connect();
 			console.log('> bluetooth device connected');
 			service = await server.getPrimaryService(bluetoothServiceUUID);
 			console.log('> bluetooth service found');
 			const characteristics = await service.getCharacteristics();
+			console.log('> bluetooth characteristics found: ', characteristics.length);
 			characteristic = characteristics[0];
 			console.log('> bluetooth characteristic found');
+			console.log('> bluetooth characteristic', characteristic);
 			if (characteristic.properties.notify) {
 				console.log('> bluetooth characteristic has notifications');
 				await characteristic.startNotifications();

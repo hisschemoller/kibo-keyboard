@@ -127,7 +127,6 @@ function onWindowResize(isFirstRun = false) {
   let scale = 0.01; // 0.15;
   let fieldOfView = camera.fov * (Math.PI / 180); // convert fov to radians
   let targetZ = canvasRect.height / (2 * Math.tan(fieldOfView / 2));
-
   camera.position.set(camera.position.x, camera.position.y, targetZ * scale);
 
   // line material needs to update to render correctly
