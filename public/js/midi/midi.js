@@ -12,6 +12,9 @@ export const REALTIME_STOP = 252;
 let midiAccess = null;
 let midiInput = null;
 
+/**
+ * Access MIDI.
+ */
 export function accessMidi() { 
   return new Promise((resolve, reject) => {
     if (navigator.requestMIDIAccess) {
@@ -32,45 +35,10 @@ export function accessMidi() {
   });
 }
 
-export function setup() {
-  if (!midiAccess) {
-    return;
-  }
-
-  document.addEventListener(STATE_CHANGE, handleStateChanges);
-
-  const inputs = midiAccess.inputs.values();
-  const outputs = midiAccess.outputs.values();
-  const inputNames = [];
-  const outputNames = [];
-
-  for (let port = inputs.next(); port && !port.done; port = inputs.next()) {
-    inputNames.push(port.value.name);
-  }
-
-  for (let port = outputs.next(); port && !port.done; port = outputs.next()) {
-    outputNames.push(port.value.name);
-  }
-
-  dispatch(getActions().updateMIDIPorts(inputNames, 'input'));
-
-  midiAccess.onstatechange = onAccessStateChange;
-}
-
 /**
- * MIDIAccess object statechange handler.
- * If the change is the addition of a new port, create a port module.
- * This handles MIDI devices that are connected after the app initialisation.
- * Disconnected or reconnected ports are handled by the port modules.
- * 
- * If this is
- * @param {Object} e MIDIConnectionEvent object.
+ * Handle state change events.
+ * @param {Object} e Custom event.
  */
-function onAccessStateChange(e) {
-  console.log('onAccessStateChange: ', e.port.name);
-  // dispatch(store.getActions().midiAccessChange(e.port));
-}
-
 function handleStateChanges(e) {
   const { state, action, actions, } = e.detail;
   switch (action.type) {
@@ -107,6 +75,30 @@ function onMIDIMessage(e) {
 	}
 }
 
+/**
+ * Scan for all available MIDI ports.
+ */
+function scanMIDIPorts() {
+  const inputs = midiAccess.inputs.values();
+  const outputs = midiAccess.outputs.values();
+  const inputNames = [];
+  const outputNames = [];
+
+  for (let port = inputs.next(); port && !port.done; port = inputs.next()) {
+    inputNames.push(port.value.name);
+  }
+
+  for (let port = outputs.next(); port && !port.done; port = outputs.next()) {
+    outputNames.push(port.value.name);
+  }
+
+  dispatch(getActions().updateMIDIPorts(inputNames, 'input'));
+}
+
+/**
+ * Select a MIDI input port to listen to.
+ * @param {Object} state Application state.
+ */
 function selectMIDIInput(state) {
   midiInput = null;
   const inputs = midiAccess.inputs.values();
@@ -115,5 +107,16 @@ function selectMIDIInput(state) {
       midiInput = port.value;
       midiInput.onmidimessage = onMIDIMessage;
     }
+  }
+}
+
+/**
+ * General module setup.
+ */
+export function setup() {
+  if (midiAccess) {
+    document.addEventListener(STATE_CHANGE, handleStateChanges);
+    midiAccess.onstatechange = scanMIDIPorts;
+    scanMIDIPorts();
   }
 }

@@ -80,7 +80,6 @@ export default {
   populate: () => {
     return (dispatch, getState, getActions) => {
       const { visibleWidth, visibleHeight, } = getState();
-      console.log(visibleHeight);
       const floorId = `FLOOR_${createUUID()}`;
       const ceilingId = `CEILING_${createUUID()}`;
       return { 
