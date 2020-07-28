@@ -26,34 +26,29 @@
     <div class="settings">
       <div class="settings__layer"></div>
       <div class="settings__window panel">
-        <div class="panel__header settings__header">
-          <span class="header__label">Settings</span>
+        <div class="panel__header">
+          <h1 class="settings__header">Kibo Piano</h1>
+          <p>Kibo Piano is a small piano with bouncing ball effect. Connect a Kodaly Kibo or another MIDI controller to play the sounds. Use the Buetooth or MIDI connection options below.</p>
         </div>
         <div class="panel__viewport">
           <div class="panel__content">
             <div class="panel__section">
               <div class="panel__section-left">
-                <span>Bluetooth</span>
+                <div class="settings__section-header">Bluetooth</div>
+                <button type="button" class="ble-connect">Connect...</button>
+                <div class="settings__status ble-status">Not connected</div>
               </div>
               <div class="panel__section-right">
-                <button type="button" class="ble-connect">Connect</button>
-                <span class="ble-status">Not connected</span>
-              </div>
-            </div>
-            <div class="panel__section">
-              <div class="panel__section-left">
-                <span>MIDI Input</span>
-              </div>
-              <div class="panel__section-right">
+                <div class="settings__section-header">MIDI</div>
                 <select class="midiin-select">
                   <option value="null">No input selected...</option>
                 </select>
-                <span class="midiin-status"></span>
+                <div class="settings__status midiin-status"></div>
               </div>
             </div>
             <div class="panel__section">
               <div class="panel__section-left">
-                <span></span>
+                <div></div>
               </div>
               <div class="panel__section-right">
                 <button type="button" class="settings__close">Close</button>
