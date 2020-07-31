@@ -46,6 +46,7 @@ export default {
       // const octave = Math.max(-2, Math.min(Math.round((velocity - 80) / 20), 2));
       const octave = Math.round((velocity / 127) * 4) - 2;
       const radius = 0.6 - (((octave + 2) / 4) * 0.5);
+      const circleArea = Math.PI * (radius ** 2);
 
       if (index === -1 || velocity === 0 || command === NOTE_OFF) {
         return;
@@ -54,6 +55,7 @@ export default {
       return {
         type: PLAY_NOTE,
         bodyId: createUUID(),
+        circleArea,
         index,
         octave,
         velocity: 120,
@@ -69,8 +71,9 @@ export default {
   },
 
   PLAY_NOTE_COLLISION,
-  playNoteCollision: (index, octave, force) => ({
+  playNoteCollision: (index, octave, circleArea, force) => ({
     type: PLAY_NOTE_COLLISION,
+    circleArea,
     index,
     octave,
     velocity: Math.floor(Math.max(1, Math.min(force * 127, 127))),

@@ -144,13 +144,14 @@ export function getWorld() {
  */
 function launchNoteBody(state) {
   const { note } = state;
-  const { bodyId, index, octave } = note;
+  const { bodyId, index, circleArea, octave } = note;
   const x = (Math.random() * 0.1) - 0.05;
   const y = 10 + Math.random() * 10;
   const body = world.bodies.byId[bodyId];
   body.setUserData({ 
     ...body.getUserData(), 
     noteIndex: index,
+    circleArea,
     octave,
   });
   body.setLinearVelocity(Vec2(x, y));
@@ -163,17 +164,18 @@ function launchNoteBody(state) {
  * @param {Object} impulse 
  * @param {Function} sumArrayValues 
  */
-function noteCollision(index, octave, contact, impulse, sumArrayValues) {
+function noteCollision(index, octave, circleArea, contact, impulse, sumArrayValues) {
   if (!contact.force) {
     contact.force = impulse.normalImpulses.reduce(sumArrayValues) + impulse.tangentImpulses.reduce(sumArrayValues);
+    contact.force = contact.force / circleArea;
   }
 
   // scale force to be in range 0 to 1
-  contact.force *= 0.15;
+  contact.force *= 0.015;
 
   // ignore the smallest collisions
   if (contact.force > 0.05) {
-    dispatch(getActions().playNoteCollision(index, octave, contact.force));
+    dispatch(getActions().playNoteCollision(index, octave, circleArea, contact.force));
   }
 }
 
@@ -246,14 +248,14 @@ function setupPhysicsWorld() {
   });
   world.on('post-solve', (contact, impulse) => {
     if (!contact.force) {
-      const { noteIndex: noteIndexA = -1, octave: octaveA = 0, } = contact.getFixtureA().getBody().getUserData();
-      const { noteIndex: noteIndexB = -1, octave: octaveB = 0 } = contact.getFixtureB().getBody().getUserData();
+      const { noteIndex: noteIndexA = -1, octave: octaveA = 0, circleArea: circleAreaA = 0 } = contact.getFixtureA().getBody().getUserData();
+      const { noteIndex: noteIndexB = -1, octave: octaveB = 0, circleArea: circleAreaB = 0 } = contact.getFixtureB().getBody().getUserData();
 
       if (noteIndexA > -1) {
-        noteCollision(noteIndexA, octaveA, contact, impulse, sumArrayValues);
+        noteCollision(noteIndexA, octaveA, circleAreaA, contact, impulse, sumArrayValues);
       }
       if (noteIndexB > -1) {
-        noteCollision(noteIndexB, octaveB, contact, impulse, sumArrayValues);
+        noteCollision(noteIndexB, octaveB, circleAreaB, contact, impulse, sumArrayValues);
       }
     }
   });

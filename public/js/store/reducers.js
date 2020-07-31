@@ -14,6 +14,7 @@ const initialState = {
   midiOutputs: [],
   midiSelectedInput: null,
   note: {
+    circleArea: 0,
     id: null,
     index: 0,
     octave: 0,
@@ -71,7 +72,7 @@ export default function reduce(state = initialState, action, actions = {}) {
     }
 
     case actions.PLAY_NOTE: {
-      const { body, bodyId, index, octave, velocity } = action;
+      const { body, bodyId, circleArea, index, octave, velocity } = action;
       return { 
         ...state,
         bodies: {
@@ -86,6 +87,7 @@ export default function reduce(state = initialState, action, actions = {}) {
         }, 
         note: {
           bodyId,
+          circleArea,
           index,
           octave,
           velocity,
@@ -94,7 +96,7 @@ export default function reduce(state = initialState, action, actions = {}) {
     }
 
     case actions.PLAY_NOTE_COLLISION: {
-      const { index, octave, velocity } = action;
+      const { circleArea, index, octave, velocity } = action;
       return { 
         ...state,
         note: {
