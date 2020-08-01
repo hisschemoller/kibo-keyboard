@@ -1,8 +1,8 @@
 {
-		"name": "kibo-piano",
+		"name": "kibo-keyboard",
 		"version": "0.1.0",
 		"author": "Wouter Hisschemöller <email@hisschemoller.com>",
-		"description": "Kibo piano.",
+		"description": "Kibo keyboard.",
 		"private": true,
 		"dependencies": {
 				"planck-js": "^0.3.19",
