@@ -49,7 +49,7 @@ export default {
       }
 
       const octave = lowestOctave + Math.floor((velocity / 127) * numOctaves);
-      const radius = 0.6 - (((octave - lowestOctave) / numOctaves) * 0.5);
+      const radius = (visibleHeight * 0.06) - (((octave - lowestOctave) / numOctaves) * (visibleHeight * 0.05));
       const circleArea = Math.PI * (radius ** 2);
 
       return {

@@ -144,9 +144,10 @@ export function getWorld() {
  */
 function launchNoteBody(state) {
   const { note, visibleHeight } = state;
+  console.log(visibleHeight);
   const { bodyId, index, circleArea, octave, originalVelocity, velocity } = note;
   const x = (Math.random() * 0.1) - 0.05;
-  const y = 10 + ((originalVelocity / 127) * 10);
+  const y = (visibleHeight * 1.0) + ((originalVelocity / 127) * (visibleHeight * 1.0));
   const body = world.bodies.byId[bodyId];
   body.setUserData({ 
     ...body.getUserData(), 
