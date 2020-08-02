@@ -3,8 +3,8 @@ const express = require('express');
 const app = express();
 const port = process.env.PORT || 3016;
 
-// Set public folder as root
-app.use(express.static('public'));
+// Set docs folder as root
+app.use(express.static('docs'));
 
 // Allow front-end access to node_modules folder
 app.use('/scripts', express.static(`${__dirname}/node_modules/`));
