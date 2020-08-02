@@ -47,7 +47,7 @@ export default {
       if (index === -1 || velocity === 0 || command === NOTE_OFF) {
         return;
       }
-      
+
       const octave = lowestOctave + Math.floor((velocity / 127) * numOctaves);
       const radius = 0.6 - (((octave - lowestOctave) / numOctaves) * 0.5);
       const circleArea = Math.PI * (radius ** 2);
@@ -58,6 +58,7 @@ export default {
         circleArea,
         index,
         octave,
+        originalVelocity: velocity,
         velocity: 120,
         body: {
           fixtures: [

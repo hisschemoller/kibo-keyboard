@@ -143,10 +143,10 @@ export function getWorld() {
  * Launch a new note circle from under the floor.
  */
 function launchNoteBody(state) {
-  const { note } = state;
-  const { bodyId, index, circleArea, octave } = note;
+  const { note, visibleHeight } = state;
+  const { bodyId, index, circleArea, octave, originalVelocity, velocity } = note;
   const x = (Math.random() * 0.1) - 0.05;
-  const y = 10 + Math.random() * 10;
+  const y = 10 + ((originalVelocity / 127) * 10);
   const body = world.bodies.byId[bodyId];
   body.setUserData({ 
     ...body.getUserData(), 

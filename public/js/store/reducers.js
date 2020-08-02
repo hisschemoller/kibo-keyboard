@@ -72,7 +72,7 @@ export default function reduce(state = initialState, action, actions = {}) {
     }
 
     case actions.PLAY_NOTE: {
-      const { body, bodyId, circleArea, index, octave, velocity } = action;
+      const { body, bodyId, circleArea, index, octave, originalVelocity, velocity } = action;
       return { 
         ...state,
         bodies: {
@@ -90,6 +90,7 @@ export default function reduce(state = initialState, action, actions = {}) {
           circleArea,
           index,
           octave,
+          originalVelocity,
           velocity,
         },
       };
