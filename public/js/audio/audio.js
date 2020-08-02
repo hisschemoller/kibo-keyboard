@@ -17,10 +17,15 @@ function createVoices() {
 		const gain = audioCtx.createGain();
 		gain.connect(audioCtx.destination);
 
+		const gain2 = audioCtx.createGain();
+		gain2.connect(audioCtx.destination);
+
 		voices.push({
 			isPlaying: false,
 			gain,
+			gain2,
 			osc: null,
+			osc2: null,
 			source: null,
 			timerId: null,
 		});
@@ -117,25 +122,40 @@ function playOneShot(nowToStartInSecs, pitch, velocity, duration) {
 		stopOneShot(voice);
 	}
 	
+	const gainLevel = velocity**2 / 127**2;
 	const startTime = audioCtx.currentTime + nowToStartInSecs;
 	voice.isPlaying = true;
+
 	voice.osc = audioCtx.createOscillator();
 	voice.osc.type = 'sine';
 	voice.osc.frequency.setValueAtTime(mtof(pitch), startTime);
 	voice.osc.connect(voice.gain);
 	voice.osc.start(startTime);
-	voice.gain.gain.setValueAtTime(velocity**2 / 127**2, startTime);
-	voice.gain.gain.exponentialRampToValueAtTime(0.0001, startTime + 0.5);
+	voice.gain.gain.setValueAtTime(gainLevel, startTime);
+	voice.gain.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
+
+	voice.osc2 = audioCtx.createOscillator();
+	voice.osc2.type = 'triangle';
+	voice.osc2.frequency.setValueAtTime(mtof(pitch), startTime);
+	voice.osc2.connect(voice.gain2);
+	voice.osc2.start(startTime);
+	voice.gain2.gain.setValueAtTime(gainLevel * 0.5, startTime);
+	voice.gain2.gain.exponentialRampToValueAtTime(0.0001, startTime + duration);
 
 	voice.timerId = setTimeout(stopOneShot, duration * 1000, voice);
 }
 
+/**
+ * Stop sound playback and free the voice for reuse.
+ * @param {Object} voice
+ */
 function stopOneShot(voice) {
 	if (voice.timerId) {
 		clearTimeout(voice.timerId);
 	}
 
 	voice.osc.stop(audioCtx.currentTime);
+	voice.osc2.stop(audioCtx.currentTime);
 	voice.isPlaying = false;
 	voice.timerId = null;
 }
