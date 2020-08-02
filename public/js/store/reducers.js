@@ -4,7 +4,7 @@ const initialState = {
     allIds: [],
     byId: {},
   },
-  isMIDIAccessable: false,
+  isMIDIAccessible: false,
   isSettingsVisible: false,
   joints: {
     allIds: [],
@@ -60,14 +60,19 @@ export default function reduce(state = initialState, action, actions = {}) {
 
     case actions.NEW_PROJECT: {
       const { bodies } = action;
+      const { isMIDIAccessible, midiInputs = [], midiOutputs = [], visibleHeight, visibleWidth } = state;
       return { 
         ...initialState,
         bodies,
-        isMIDIAccessable: state.isMIDIAccessable,
+        isMIDIAccessible,
         joints: {
           allIds: [],
           byId: {},
         },
+        midiInputs, 
+        midiOutputs, 
+        visibleHeight,
+        visibleWidth,
       };
     }
 
@@ -123,13 +128,13 @@ export default function reduce(state = initialState, action, actions = {}) {
       return { ...state, midiSelectedInput: action.name, };
     }
 
-    case actions.SET_MIDI_ACCESSABLE: {
+    case actions.SET_MIDI_ACCESSIBLE: {
       const { value } = action;
-      return { ...state, isMIDIAccessable: value };
+      return { ...state, isMIDIAccessible: value };
     }
 
     case actions.SET_PROJECT: {
-      const { isMIDIAccessable, midiInputs = [], midiOutputs = [], visibleWidth, visibleHeight } = state;
+      const { isMIDIAccessible, midiInputs = [], midiOutputs = [], visibleWidth, visibleHeight } = state;
       return { 
         ...initialState,
         bodies: {
@@ -142,7 +147,7 @@ export default function reduce(state = initialState, action, actions = {}) {
         },
         ...state, 
         ...action.state,
-        isMIDIAccessable, 
+        isMIDIAccessible, 
         midiInputs, 
         midiOutputs, 
         visibleHeight, 

@@ -12,7 +12,7 @@ const PLAY_NOTE_COLLISION = 'PLAY_NOTE_COLLISION';
 const POPULATE = 'POPULATE';
 const RESIZE = 'RESIZE';
 const SELECT_MIDI_INPUT = 'SELECT_MIDI_INPUT';
-const SET_MIDI_ACCESSABLE = 'SET_MIDI_ACCESSABLE';
+const SET_MIDI_ACCESSIBLE = 'SET_MIDI_ACCESSIBLE';
 const SET_PROJECT = 'SET_PROJECT';
 const TOGGLE_SETTINGS = 'TOGGLE_SETTINGS';
 const UPDATE_MIDI_PORTS = 'UPDATE_MIDI_PORTS';
@@ -115,8 +115,8 @@ export default {
   SELECT_MIDI_INPUT,
   selectMIDIInput: name => ({ type: SELECT_MIDI_INPUT, name, }),
 
-  SET_MIDI_ACCESSABLE,
-  setMidiAccessable: value => ({ type: SET_MIDI_ACCESSABLE, value }),
+  SET_MIDI_ACCESSIBLE,
+  setMidiAccessible: value => ({ type: SET_MIDI_ACCESSIBLE, value }),
   
   SET_PROJECT,
   setProject: state => ({ type: SET_PROJECT, state }),

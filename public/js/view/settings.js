@@ -49,8 +49,8 @@ function handleStateChanges(e) {
       updateMIDIInputs(state);
       break;
 
-		case actions.SET_MIDI_ACCESSABLE:
-			showMIDIAccessable(state);
+		case actions.SET_MIDI_ACCESSIBLE:
+			showMIDIAccessible(state);
 			break;
 
 		case actions.TOGGLE_SETTINGS:
@@ -75,10 +75,10 @@ export function setup() {
   addEventListeners();
 }
 
-function showMIDIAccessable(state) {
-	const { isMIDIAccessable } = state;
-	midiInputStatusEl.textContent = isMIDIAccessable ? '' : 'MIDI unavailable';
-	if (isMIDIAccessable) {
+function showMIDIAccessible(state) {
+	const { isMIDIAccessible } = state;
+	midiInputStatusEl.textContent = isMIDIAccessible ? '' : 'MIDI unavailable';
+	if (isMIDIAccessible) {
 		midiInputsSelect.removeAttribute('disabled');
 	} else {
 		midiInputsSelect.setAttribute('disabled', 'disabled');

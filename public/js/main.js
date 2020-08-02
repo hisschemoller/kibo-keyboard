@@ -23,7 +23,7 @@ async function main() {
     persist();
     setupMidi();
     setupBluetooth();
-    dispatch(getActions().setMidiAccessable(hasMIDIAccess));
+    dispatch(getActions().setMidiAccessible(hasMIDIAccess));
     dispatch(getActions().populate());
     dispatch(getActions().toggleSettings(true));
   }
