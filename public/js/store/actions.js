@@ -1,4 +1,4 @@
-import { createUUID, pitches } from '../utils/utils.js';
+import { createUUID, lowestOctave, numOctaves, pitches } from '../utils/utils.js';
 import { NOTE_OFF } from '../midi/midi.js';
 
 const BLUETOOTH_CONNECT = 'BLUETOOTH_CONNECT';
@@ -43,14 +43,14 @@ export default {
     return (dispatch, getState, getActions) => {
       const { visibleWidth, visibleHeight, } = getState();
       const index = pitches.indexOf(pitch);
-      // const octave = Math.max(-2, Math.min(Math.round((velocity - 80) / 20), 2));
-      const octave = Math.round((velocity / 127) * 4) - 2;
-      const radius = 0.6 - (((octave + 2) / 4) * 0.5);
-      const circleArea = Math.PI * (radius ** 2);
 
       if (index === -1 || velocity === 0 || command === NOTE_OFF) {
         return;
       }
+      
+      const octave = lowestOctave + Math.floor((velocity / 127) * numOctaves);
+      const radius = 0.6 - (((octave - lowestOctave) / numOctaves) * 0.5);
+      const circleArea = Math.PI * (radius ** 2);
 
       return {
         type: PLAY_NOTE,

@@ -1,11 +1,12 @@
 import { dispatch, getActions, getState, STATE_CHANGE, } from '../store/store.js';
-import { pitches } from '../utils/utils.js';
+import { lowestOctave, numOctaves, pitches } from '../utils/utils.js';
 
 const NOTE_ON = 144;
 const NOTE_OFF = 128;
 const numVoices = 84;
 const pitchRange = new Array(127).fill(null);
 const voices = [];
+const noteDuration = 0.5;
 let audioCtx;
 let voiceIndex = 0;
 
@@ -34,7 +35,7 @@ function createVoices() {
 
 /**
  * Handle MIDI message.
- * @param {Object} state 
+ * @param {Object} state Application state.
  */
 function handleMIDI(state) {
 	const {data0, data1, data2 } = state;
@@ -74,6 +75,7 @@ function handleStateChanges(e) {
 /**
  * Audio initialised after user generated event.
  * In this case a click on the Bluetooth connect button.
+ * @param {Object} state Application state.
  */
 function initialiseAudio(state) {
 	const { isSettingsVisible } = state;
@@ -91,7 +93,7 @@ function initialiseAudio(state) {
 function mtof(midi) {
 	if (midi <= -1500) return 0;
 	else if (midi > 1499) return 3.282417553401589e+38;
-	else return 440.0 * Math.pow(2, (Math.floor(midi) - 69) / 12.0);
+	else return 440 * Math.pow(2, (Math.floor(midi) - 69) / 12);
 };
 
 /**
@@ -100,21 +102,22 @@ function mtof(midi) {
  */
 function playNote(state) {
 	const { bodyId, index, octave, velocity } = state.note;
-	const pitch = pitches[index] + (octave * 12);
+	const pitch = (pitches[index] - pitches[0]) + (octave * 12);
 	if (audioCtx) {
 		// startNote(0, pitch, velocity);
 		// stopNote(0.5, pitch, velocity);
-		playOneShot(0, pitch, velocity, 0.5);
+		startOneShot(0, pitch, velocity, noteDuration);
 	}
 }
 
 /**
- * 
- * @param {*} nowToStartInSecs 
- * @param {*} pitch 
- * @param {*} velocity 
+ * Play a sound of fixed length.
+ * @param {Number} nowToStartInSecs 
+ * @param {Number} pitch 
+ * @param {Number} velocity 
+ * @param {Number} duration 
  */
-function playOneShot(nowToStartInSecs, pitch, velocity, duration) {
+function startOneShot(nowToStartInSecs, pitch, velocity, duration) {
 	const voice = voices[voiceIndex];
 	voiceIndex = ++voiceIndex % numVoices;
 
@@ -168,10 +171,10 @@ export function setup() {
 }
 
 /**
- * 
- * @param {*} nowToStartInSecs 
- * @param {*} pitch 
- * @param {*} velocity 
+ * Start note.
+ * @param {Number} nowToStartInSecs 
+ * @param {Number} pitch 
+ * @param {Number} velocity 
  */
 function startNote(nowToStartInSecs, pitch, velocity) {
 	stopNote(0, pitch, velocity);
@@ -193,10 +196,10 @@ function startNote(nowToStartInSecs, pitch, velocity) {
 }
 
 /**
- * 
- * @param {*} nowToStopInSecs 
- * @param {*} pitch 
- * @param {*} velocity 
+ * Stop note.
+ * @param {Number} nowToStopInSecs 
+ * @param {Number} pitch 
+ * @param {Number} velocity 
  */
 function stopNote(nowToStopInSecs, pitch, velocity) {
 	if (pitchRange[pitch]) {
