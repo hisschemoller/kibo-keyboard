@@ -1,5 +1,5 @@
 import { createUUID, lowestOctave, numOctaves, pitches } from '../utils/utils.js';
-import { NOTE_OFF } from '../midi/midi.js';
+import { NOTE_ON } from '../midi/midi.js';
 
 const BLUETOOTH_CONNECT = 'BLUETOOTH_CONNECT';
 const BLUETOOTH_DISCONNECT = 'BLUETOOTH_DISCONNECT';
@@ -44,7 +44,7 @@ export default {
       const { visibleWidth, visibleHeight, } = getState();
       const index = pitches.indexOf(pitch);
 
-      if (index === -1 || velocity === 0 || command === NOTE_OFF) {
+      if (index === -1 || velocity === 0 || command !== NOTE_ON) {
         return;
       }
 

@@ -171,7 +171,7 @@ function noteCollision(index, octave, circleArea, contact, impulse, sumArrayValu
   }
 
   // scale force to be in range 0 to 1
-  contact.force *= 0.015;
+  contact.force *= 0.035;
 
   // ignore the smallest collisions
   if (contact.force > 0.05) {

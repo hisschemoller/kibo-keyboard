@@ -26,8 +26,6 @@ async function connect() {
 		console.log('> bluetooth device found');
 		if (!device.gatt.connected) {
 			console.log('> bluetooth device connecting...');
-			console.log('> bluetooth device', device);
-			console.log('> bluetooth device.gatt', device.gatt);
 			server = await device.gatt.connect();
 			console.log('> bluetooth device connected');
 			service = await server.getPrimaryService(bluetoothServiceUUID);
@@ -36,7 +34,7 @@ async function connect() {
 			console.log('> bluetooth characteristics found: ', characteristics.length);
 			characteristic = characteristics[0];
 			console.log('> bluetooth characteristic found');
-			console.log('> bluetooth characteristic', characteristic);
+			// console.log('> bluetooth characteristic', characteristic);
 			if (characteristic.properties.notify) {
 				console.log('> bluetooth characteristic has notifications');
 				await characteristic.startNotifications();
@@ -71,8 +69,7 @@ function handleStateChanges(e) {
  */
 function onCharacteristicValueChanged(e) {
 	const { value } = e.target;
-	console.log('onCharacteristicValueChanged', value);
-	// dispatch(getActions().handleMIDIMessage(value.getUint8(2), value.getUint8(3), value.getUint8(4)));
+	// console.log('onCharacteristicValueChanged', value);
 	dispatch(getActions().playNote(value.getUint8(2) & 0xf0, value.getUint8(2) & 0x0f, value.getUint8(3), value.getUint8(4)));
 }
 
