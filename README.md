@@ -2,19 +2,23 @@
 
 A musical web app to play notes with delay effect.
 
-Demo: https://hisschemoller.github.io/kibo-keyboard/<br>
+Demo: https://hisschemoller.github.io/kibo-keyboard/
+
+See a [video with the Kibo instrument on YouTube](https://youtu.be/SUHQvVLRqkc)<br>
 <br>
 ![Kibo Keyboard](assets/img/kibo-keyboard.gif 'Kibo Keyboard')
 
 Kibo Keyboard is a simple melodic music keyboard. Each time you play a note a small ball is launched from the bottom of the screen. The ball then bounces around the screen. Whenever it bounces off another object it again plays its sound. This way the bouncing balls create a random delay effect.
 
-The harder you play the note (the higher the MIDI velocity) the higher the octave of the sound.
+The harder you play the note (the higher the MIDI velocity) the higher the octave of the sound. Visually higher octaves are represented as smaller balls.
 
 ## Kodaly Kibo
 
 ![Kodaly Kibo](assets/img/kibo-bb-prospettiva.png 'Kodaly Kibo')
 
 This app is especially made to work with the [Kodaly Kibo](https://www.kodaly.app/). The Kibo is a MIDI controller with eight wooden shapes that can be played like drum pads or piano keys. MIDI transmits wireless over Bluetooth LE or over USB cable.
+
+Try the [demo of the app](https://hisschemoller.github.io/kibo-keyboard/) on its Github page. If you don’t have a Kibo or other MIDI controller handy you can use your computer’s number keys 1 to 8.
 
 ## Kibo MIDI note pitches
 
@@ -26,7 +30,7 @@ You will notice that the harder you hit a note, the higher it sounds. This is be
 
 ![Settings panel](assets/img/kibo-keyboard-settings.gif 'Settings panel')
 
-The settings panel shows when the app starts or when you click the cogwheel icon in the top right of the screen.
+The settings panel shows when the app starts. It can be recalled by clicking the cogwheel icon in the top right corner of the screen.
 
 It has two settings:
 
@@ -35,6 +39,6 @@ It has two settings:
 
 ## Supported browsers
 
-Chrome is currently the only browser that can run the app. The desktop as well as the mobile Android version.
+Chrome is currently the only browser that can run the app. The desktop as well as the mobile Android version of Chrome.
 
 Browsers have to implement the Javascript Web Bluetooth or Web MIDI API to run the app. Because these are required to connect through MIDI or Bluetooth.
