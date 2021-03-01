@@ -6,7 +6,7 @@
 		"private": true,
 		"dependencies": {
 				"planck-js": "^0.3.19",
-				"three": "^0.118.3"
+				"three": "^0.125.0"
 		},
 		"devDependencies": {
 				"express": "^4.11.1"
